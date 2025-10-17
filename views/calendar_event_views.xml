@@ -1,4 +1,226 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Citas extendidas -->
+    
+    <!-- Vista de Lista/Tree extendida para Citas -->
+    <record id="view_calendar_event_list_cutai" model="ir.ui.view">
+        <field name="name">calendar.event.list.cutai</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id" ref="calendar.view_calendar_event_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="attributes">
+                <attribute name="decoration-success">appointment_state == 'done'</attribute>
+                <attribute name="decoration-warning">appointment_state == 'confirmed'</attribute>
+                <attribute name="decoration-danger">appointment_state == 'no_show'</attribute>
+                <attribute name="decoration-muted">appointment_state == 'cancelled'</attribute>
+            </xpath>
+            <xpath expr="//field[@name='start']" position="after">
+                <field name="realization_date" optional="show"/>
+                <field name="create_date" optional="hide"/>
+                <field name="create_uid" optional="hide"/>
+                <field name="write_date" optional="hide"/>
+                <field name="write_uid" optional="hide"/>
+                <field name="branch_id" optional="show"/>
+                <field name="client_number" optional="show"/>
+                <field name="client_first_name" optional="show"/>
+                <field name="client_last_name" optional="show"/>
+                <field name="client_email" optional="hide"/>
+                <field name="client_phone" optional="show"/>
+                <field name="client_vat" optional="hide"/>
+                <field name="main_service_id" optional="show"/>
+                <field name="list_price" optional="show"/>
+                <field name="real_price" optional="show"/>
+                <field name="session_number" optional="show"/>
+                <field name="total_sessions" optional="show"/>
+                <field name="attendant_id" optional="show"/>
+                <field name="appointment_state" optional="show"/>
+                <field name="payment_status" optional="show"/>
+                <field name="payment_date" optional="hide"/>
+                <field name="payment_id" optional="hide"/>
+                <field name="origin" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Vista de Formulario extendida para Citas -->
+    <record id="view_calendar_event_form_cutai" model="ir.ui.view">
+        <field name="name">calendar.event.form.cutai</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
+        <field name="arch" type="xml">
+            <!-- Agregar botones de estado en el header -->
+            <xpath expr="//header" position="inside">
+                <button name="action_confirm_appointment" 
+                        string="Confirmar" 
+                        type="object" 
+                        invisible="appointment_state != 'scheduled'" 
+                        class="oe_highlight"/>
+                <button name="action_start_appointment" 
+                        string="Iniciar" 
+                        type="object" 
+                        invisible="appointment_state not in ['scheduled', 'confirmed']" 
+                        class="oe_highlight"/>
+                <button name="action_complete_appointment" 
+                        string="Completar" 
+                        type="object" 
+                        invisible="appointment_state != 'in_progress'" 
+                        class="oe_highlight"/>
+                <button name="action_mark_no_show" 
+                        string="No Asistió" 
+                        type="object" 
+                        invisible="appointment_state not in ['scheduled', 'confirmed']"/>
+                <button name="action_cancel_appointment" 
+                        string="Cancelar" 
+                        type="object" 
+                        invisible="appointment_state in ['done', 'cancelled']"/>
+                <field name="appointment_state" widget="statusbar"/>
+            </xpath>
+
+            <!-- Agregar información del cliente -->
+            <xpath expr="//field[@name='partner_ids']" position="after">
+                <group string="Información del Cliente">
+                    <group>
+                        <field name="client_number"/>
+                        <field name="client_first_name"/>
+                        <field name="client_last_name"/>
+                    </group>
+                    <group>
+                        <field name="client_email"/>
+                        <field name="client_phone"/>
+                        <field name="client_vat"/>
+                    </group>
+                </group>
+            </xpath>
+
+            <!-- Agregar fechas y responsables -->
+            <xpath expr="//field[@name='start']" position="after">
+                <field name="stop"/>
+                <field name="realization_date" readonly="1"/>
+            </xpath>
+            
+            <xpath expr="//field[@name='location']" position="after">
+                <group string="Fechas y Responsables">
+                    <group>
+                        <field name="create_date" readonly="1"/>
+                        <field name="create_uid" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="write_date" readonly="1"/>
+                        <field name="write_uid" readonly="1"/>
+                    </group>
+                </group>
+            </xpath>
+
+            <!-- Agregar recursos y servicios -->
+            <xpath expr="//field[@name='location']" position="after">
+                <group string="Local y Recursos">
+                    <group>
+                        <field name="branch_id"/>
+                        <field name="cabin_id"/>
+                    </group>
+                    <group>
+                        <field name="machine_id"/>
+                        <field name="attendant_id"/>
+                    </group>
+                </group>
+                
+                <group string="Servicio y Precios">
+                    <group>
+                        <field name="main_service_id"/>
+                        <field name="list_price"/>
+                        <field name="real_price"/>
+                    </group>
+                    <group>
+                        <field name="session_number"/>
+                        <field name="total_sessions"/>
+                        <field name="origin"/>
+                    </group>
+                </group>
+            </xpath>
+
+            <!-- Agregar estado de pago -->
+            <xpath expr="//field[@name='location']" position="after">
+                <group string="Estado de Pago">
+                    <group>
+                        <field name="payment_status"/>
+                        <field name="payment_date"/>
+                    </group>
+                    <group>
+                        <field name="payment_id"/>
+                    </group>
+                </group>
+            </xpath>
+
+            <!-- Agregar notas y comentarios -->
+            <xpath expr="//field[@name='description']" position="after">
+                <group string="Notas y Comentarios">
+                    <field name="shared_notes" placeholder="Notas que el cliente puede ver..."/>
+                    <field name="internal_notes" placeholder="Comentarios internos (no visibles para el cliente)..."/>
+                    <field name="client_preference" placeholder="Preferencias del cliente (horarios, terapeuta preferido, etc.)..."/>
+                </group>
+            </xpath>
+
+            <!-- Agregar información de WhatsApp -->
+            <xpath expr="//field[@name='description']" position="after">
+                <group string="Notificaciones WhatsApp">
+                    <group>
+                        <field name="whatsapp_notification_sent" readonly="1"/>
+                        <field name="whatsapp_reminder_48h_sent" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="whatsapp_reminder_24h_sent" readonly="1"/>
+                        <field name="whatsapp_reminder_3h_sent" readonly="1"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Acción para ver citas CUTAI -->
+    <record id="action_calendar_event_cutai" model="ir.actions.act_window">
+        <field name="name">Agenda CUTAI</field>
+        <field name="res_model">calendar.event</field>
+        <field name="view_mode">calendar,list,form</field>
+        <field name="context">{
+            'search_default_branch_id': active_id,
+        }</field>
+    </record>
+
+    <!-- Filtros de búsqueda -->
+    <record id="view_calendar_event_search_cutai" model="ir.ui.view">
+        <field name="name">calendar.event.search.cutai</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id" ref="calendar.view_calendar_event_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="branch_id"/>
+                <field name="attendant_id"/>
+                <field name="main_service_id"/>
+                <field name="client_number"/>
+                <field name="client_vat"/>
+                <field name="origin"/>
+                <separator/>
+                <filter name="today" string="Hoy" domain="[('start', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')), ('start', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:59:59'))]"/>
+                <filter name="this_week" string="Esta Semana" domain="[('start', '&gt;=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d')), ('start', '&lt;=', (context_today() + datetime.timedelta(days=6-context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter name="scheduled" string="Programadas" domain="[('appointment_state', '=', 'scheduled')]"/>
+                <filter name="confirmed" string="Confirmadas" domain="[('appointment_state', '=', 'confirmed')]"/>
+                <filter name="in_progress" string="En Progreso" domain="[('appointment_state', '=', 'in_progress')]"/>
+                <filter name="done" string="Completadas" domain="[('appointment_state', '=', 'done')]"/>
+                <filter name="no_show" string="No Asistieron" domain="[('appointment_state', '=', 'no_show')]"/>
+                <separator/>
+                <filter name="pending_payment" string="Pago Pendiente" domain="[('payment_status', '=', 'pending')]"/>
+                <filter name="paid" string="Pagadas" domain="[('payment_status', '=', 'paid')]"/>
+                <separator/>
+                <group expand="0" string="Agrupar Por">
+                    <filter name="group_branch" string="Local" context="{'group_by': 'branch_id'}"/>
+                    <filter name="group_attendant" string="Prestador" context="{'group_by': 'attendant_id'}"/>
+                    <filter name="group_service" string="Servicio" context="{'group_by': 'main_service_id'}"/>
+                    <filter name="group_state" string="Estado" context="{'group_by': 'appointment_state'}"/>
+                    <filter name="group_origin" string="Origen" context="{'group_by': 'origin'}"/>
+                    <filter name="group_payment" string="Estado Pago" context="{'group_by': 'payment_status'}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
 </odoo>
