@@ -9,10 +9,18 @@ _logger = logging.getLogger(__name__)
 class CalendarEvent(models.Model):
     _inherit = 'calendar.event'
     
+    # ==================== PARTNER PRINCIPAL (CLIENTE) ====================
+    main_partner_id = fields.Many2one(
+        'res.partner',
+        string='Cliente Principal',
+        compute='_compute_main_partner_id',
+        store=True
+    )
+    
     # ==================== INFORMACIÓN DE CLIENTE ====================
     client_number = fields.Char(
         string='N° de Cliente',
-        related='partner_id.ref',
+        related='main_partner_id.ref',
         store=True
     )
     
@@ -30,19 +38,19 @@ class CalendarEvent(models.Model):
     
     client_email = fields.Char(
         string='E-mail',
-        related='partner_id.email',
+        related='main_partner_id.email',
         store=True
     )
     
     client_phone = fields.Char(
         string='Teléfono',
-        related='partner_id.phone',
+        related='main_partner_id.phone',
         store=True
     )
     
     client_vat = fields.Char(
         string='Cédula',
-        related='partner_id.vat',
+        related='main_partner_id.vat',
         store=True
     )
     
@@ -207,11 +215,20 @@ class CalendarEvent(models.Model):
     
     # ==================== CAMPOS COMPUTADOS ====================
     
-    @api.depends('partner_id', 'partner_id.name')
+    @api.depends('partner_ids')
+    def _compute_main_partner_id(self):
+        """Obtiene el primer partner de partner_ids como cliente principal"""
+        for record in self:
+            if record.partner_ids:
+                record.main_partner_id = record.partner_ids[0]
+            else:
+                record.main_partner_id = False
+    
+    @api.depends('main_partner_id', 'main_partner_id.name')
     def _compute_client_names(self):
         for record in self:
-            if record.partner_id and record.partner_id.name:
-                name_parts = record.partner_id.name.split(' ', 1)
+            if record.main_partner_id and record.main_partner_id.name:
+                name_parts = record.main_partner_id.name.split(' ', 1)
                 record.client_first_name = name_parts[0] if name_parts else ''
                 record.client_last_name = name_parts[1] if len(name_parts) > 1 else ''
             else:
@@ -316,6 +333,24 @@ class CalendarEvent(models.Model):
 ¿Necesitas cancelar o reagendar? Contáctanos con anticipación.
 
 ¡Te esperamos! 🌟"""
+    
+    def send_whatsapp_reminder_48h(self):
+        """Enviar recordatorio de 48 horas"""
+        for record in self:
+            record.send_whatsapp_notification('reminder_48h')
+        return True
+    
+    def send_whatsapp_reminder_24h(self):
+        """Enviar recordatorio de 24 horas"""
+        for record in self:
+            record.send_whatsapp_notification('reminder_24h')
+        return True
+    
+    def send_whatsapp_reminder_3h(self):
+        """Enviar recordatorio de 3 horas"""
+        for record in self:
+            record.send_whatsapp_notification('reminder_3h')
+        return True
     
     def _get_whatsapp_reminder_message(self, hours_before):
         """Mensaje de recordatorio"""

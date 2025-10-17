@@ -48,7 +48,6 @@ access_cutai_retail_sale_line_operator,cutai.retail.sale.line.operator,model_cut
 access_cutai_retail_sale_line_manager,cutai.retail.sale.line.manager,model_cutai_retail_sale_line,group_cutai_manager,1,1,1,1
 access_cutai_product_brand_user,cutai.product.brand.user,model_cutai_product_brand,group_cutai_user,1,0,0,0
 access_cutai_product_brand_manager,cutai.product.brand.manager,model_cutai_product_brand,group_cutai_manager,1,1,1,1
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_calendar_event_cutai_user,calendar.event.cutai.user,calendar.model_calendar_event,cutai_security.group_cutai_user,1,0,0,0
-access_calendar_event_cutai_operator,calendar.event.cutai.operator,calendar.model_calendar_event,cutai_security.group_cutai_operator,1,1,1,0
-access_calendar_event_cutai_manager,calendar.event.cutai.manager,calendar.model_calendar_event,cutai_security.group_cutai_manager,1,1,1,1
+access_calendar_event_cutai_user,calendar.event.cutai.user,calendar.model_calendar_event,group_cutai_user,1,0,0,0
+access_calendar_event_cutai_operator,calendar.event.cutai.operator,calendar.model_calendar_event,group_cutai_operator,1,1,1,0
+access_calendar_event_cutai_manager,calendar.event.cutai.manager,calendar.model_calendar_event,group_cutai_manager,1,1,1,1

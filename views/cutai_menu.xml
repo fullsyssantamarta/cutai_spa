@@ -59,7 +59,7 @@
     <menuitem id="menu_cutai_calendar"
               name="Agenda"
               parent="menu_cutai_root"
-              action="calendar.action_calendar_event"
+              action="action_calendar_event_cutai"
               sequence="40"/>
 
     <!-- Servicios SPA -->

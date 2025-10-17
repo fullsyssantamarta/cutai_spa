@@ -47,130 +47,195 @@
         <field name="model">calendar.event</field>
         <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
         <field name="arch" type="xml">
-            <!-- Agregar botones de estado en el header -->
-            <xpath expr="//header" position="inside">
-                <button name="action_confirm_appointment" 
-                        string="Confirmar" 
-                        type="object" 
-                        invisible="appointment_state != 'scheduled'" 
-                        class="oe_highlight"/>
-                <button name="action_start_appointment" 
-                        string="Iniciar" 
-                        type="object" 
-                        invisible="appointment_state not in ['scheduled', 'confirmed']" 
-                        class="oe_highlight"/>
-                <button name="action_complete_appointment" 
-                        string="Completar" 
-                        type="object" 
-                        invisible="appointment_state != 'in_progress'" 
-                        class="oe_highlight"/>
-                <button name="action_mark_no_show" 
-                        string="No Asistió" 
-                        type="object" 
-                        invisible="appointment_state not in ['scheduled', 'confirmed']"/>
-                <button name="action_cancel_appointment" 
-                        string="Cancelar" 
-                        type="object" 
-                        invisible="appointment_state in ['done', 'cancelled']"/>
-                <field name="appointment_state" widget="statusbar"/>
+            <!-- Agregar header con botones de estado al principio del form -->
+            <xpath expr="//form/sheet" position="before">
+                <header>
+                    <button name="action_confirm_appointment" 
+                            string="Confirmar" 
+                            type="object" 
+                            invisible="appointment_state != 'scheduled'" 
+                            class="oe_highlight"/>
+                    <button name="action_start_appointment" 
+                            string="Iniciar" 
+                            type="object" 
+                            invisible="appointment_state not in ['scheduled', 'confirmed']" 
+                            class="oe_highlight"/>
+                    <button name="action_complete_appointment" 
+                            string="Completar" 
+                            type="object" 
+                            invisible="appointment_state != 'in_progress'" 
+                            class="oe_highlight"/>
+                    <button name="action_mark_no_show" 
+                            string="No Asistió" 
+                            type="object" 
+                            invisible="appointment_state not in ['scheduled', 'confirmed']"/>
+                    <button name="action_cancel_appointment" 
+                            string="Cancelar" 
+                            type="object" 
+                            invisible="appointment_state in ['done', 'cancelled']"/>
+                    <field name="appointment_state" widget="statusbar" statusbar_visible="scheduled,confirmed,in_progress,done"/>
+                </header>
             </xpath>
 
-            <!-- Agregar información del cliente -->
-            <xpath expr="//field[@name='partner_ids']" position="after">
-                <group string="Información del Cliente">
+            <!-- Agregar pestanas CUTAI al notebook existente -->
+            <xpath expr="//page[@name='page_invitations']" position="after">
+                <page string="Información del Cliente" name="page_client_info">
                     <group>
-                        <field name="client_number"/>
-                        <field name="client_first_name"/>
-                        <field name="client_last_name"/>
+                        <group string="Cliente Principal">
+                            <field name="main_partner_id" readonly="1" 
+                                   options="{'no_create': True, 'no_open': False}"
+                                   context="{'show_address': 1}"/>
+                            <field name="client_number" readonly="1"/>
+                            <field name="client_vat" readonly="1"/>
+                        </group>
+                        <group string="Datos de Contacto">
+                            <field name="client_email" widget="email" readonly="1"/>
+                            <field name="client_phone" widget="phone" readonly="1"/>
+                        </group>
                     </group>
                     <group>
-                        <field name="client_email"/>
-                        <field name="client_phone"/>
-                        <field name="client_vat"/>
+                        <group string="Información Personal">
+                            <field name="client_first_name" readonly="1"/>
+                            <field name="client_last_name" readonly="1"/>
+                        </group>
+                        <group string="Origen y Preferencias">
+                            <field name="origin"/>
+                            <field name="client_preference" 
+                                   placeholder="Horarios preferidos, terapeuta preferido, observaciones especiales..."/>
+                        </group>
                     </group>
-                </group>
-            </xpath>
-
-            <!-- Agregar fechas y responsables -->
-            <xpath expr="//field[@name='start']" position="after">
-                <field name="stop"/>
-                <field name="realization_date" readonly="1"/>
-            </xpath>
-            
-            <xpath expr="//field[@name='location']" position="after">
-                <group string="Fechas y Responsables">
+                </page>
+                    
+                <page string="Local y Recursos" name="page_location">
                     <group>
-                        <field name="create_date" readonly="1"/>
-                        <field name="create_uid" readonly="1"/>
+                        <group string="Ubicación">
+                            <field name="branch_id" options="{'no_create': True}"/>
+                            <field name="cabin_id" options="{'no_create': True}"/>
+                        </group>
+                        <group string="Recursos y Personal">
+                            <field name="machine_id" options="{'no_create': True}"/>
+                            <field name="attendant_id" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                </page>
+                    
+                <page string="Servicio y Precios" name="page_service">
+                    <group>
+                        <group string="Servicio">
+                            <field name="main_service_id" options="{'no_create': True}"/>
+                            <field name="realization_date" readonly="1" 
+                                   string="Fecha de Realización"/>
+                        </group>
+                        <group string="Sesiones">
+                            <label for="session_number" string="Progreso de Sesiones"/>
+                            <div class="o_row">
+                                <field name="session_number" class="oe_inline"/> 
+                                <span class="oe_inline"> de </span>
+                                <field name="total_sessions" class="oe_inline"/>
+                            </div>
+                        </group>
                     </group>
                     <group>
-                        <field name="write_date" readonly="1"/>
-                        <field name="write_uid" readonly="1"/>
+                        <group string="Precios">
+                            <field name="list_price"/>
+                            <field name="real_price"/>
+                        </group>
+                        <group string="Estado de Pago">
+                            <field name="payment_status" widget="badge"
+                                   decoration-success="payment_status == 'paid'"
+                                   decoration-warning="payment_status == 'pending'"
+                                   decoration-info="payment_status == 'partial'"/>
+                            <field name="payment_date"/>
+                            <field name="payment_id"/>
+                        </group>
                     </group>
-                </group>
-            </xpath>
-
-            <!-- Agregar recursos y servicios -->
-            <xpath expr="//field[@name='location']" position="after">
-                <group string="Local y Recursos">
+                </page>
+                    
+                <page string="Notas y Comentarios" name="page_notes">
                     <group>
-                        <field name="branch_id"/>
-                        <field name="cabin_id"/>
+                        <group>
+                            <separator string="Notas Compartidas"/>
+                            <field name="shared_notes" nolabel="1"
+                                   placeholder="Notas que el cliente puede ver (instrucciones post-tratamiento, recomendaciones, etc.)..."/>
+                        </group>
                     </group>
                     <group>
-                        <field name="machine_id"/>
-                        <field name="attendant_id"/>
+                        <group>
+                            <separator string="Comentarios Internos"/>
+                            <field name="internal_notes" nolabel="1"
+                                   placeholder="Comentarios privados del personal (observaciones del tratamiento, reacciones, etc.)..."/>
+                        </group>
                     </group>
-                </group>
+                    <group>
+                        <field name="description" nolabel="1" 
+                               placeholder="Descripción general de la cita..."/>
+                    </group>
+                </page>
+                    
+                <page string="Notificaciones WhatsApp" name="page_whatsapp">
+                    <group>
+                        <div class="alert alert-info" role="alert" style="margin-bottom: 10px;">
+                            <strong>Información:</strong> Puedes marcar manualmente estas notificaciones si ya fueron enviadas por otro medio.
+                        </div>
+                    </group>
+                    <group string="Estado de Notificaciones">
+                        <group>
+                            <field name="whatsapp_notification_sent" 
+                                   widget="boolean"
+                                   string="Confirmación Enviada"/>
+                            <field name="whatsapp_reminder_48h_sent" 
+                                   widget="boolean"
+                                   string="Recordatorio 48h Enviado"/>
+                        </group>
+                        <group>
+                            <field name="whatsapp_reminder_24h_sent" 
+                                   widget="boolean"
+                                   string="Recordatorio 24h Enviado"/>
+                            <field name="whatsapp_reminder_3h_sent" 
+                                   widget="boolean"
+                                   string="Recordatorio 3h Enviado"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <button name="send_whatsapp_notification" 
+                                    string="Enviar Confirmación WhatsApp" 
+                                    type="object" 
+                                    class="btn-primary"
+                                    invisible="whatsapp_notification_sent == True"/>
+                            <button name="send_whatsapp_reminder_48h" 
+                                    string="Enviar Recordatorio 48h" 
+                                    type="object" 
+                                    class="btn-secondary"
+                                    invisible="whatsapp_reminder_48h_sent == True"/>
+                        </group>
+                        <group>
+                            <button name="send_whatsapp_reminder_24h" 
+                                    string="Enviar Recordatorio 24h" 
+                                    type="object" 
+                                    class="btn-secondary"
+                                    invisible="whatsapp_reminder_24h_sent == True"/>
+                            <button name="send_whatsapp_reminder_3h" 
+                                    string="Enviar Recordatorio 3h" 
+                                    type="object" 
+                                    class="btn-secondary"
+                                    invisible="whatsapp_reminder_3h_sent == True"/>
+                        </group>
+                    </group>
+                </page>
                 
-                <group string="Servicio y Precios">
-                    <group>
-                        <field name="main_service_id"/>
-                        <field name="list_price"/>
-                        <field name="real_price"/>
+                <page string="Auditoría" name="page_audit">
+                    <group string="Información de Creación y Modificación">
+                        <group>
+                            <field name="create_date" readonly="1" string="Creado el"/>
+                            <field name="create_uid" readonly="1" string="Creado por"/>
+                        </group>
+                        <group>
+                            <field name="write_date" readonly="1" string="Última modificación"/>
+                            <field name="write_uid" readonly="1" string="Modificado por"/>
+                        </group>
                     </group>
-                    <group>
-                        <field name="session_number"/>
-                        <field name="total_sessions"/>
-                        <field name="origin"/>
-                    </group>
-                </group>
-            </xpath>
-
-            <!-- Agregar estado de pago -->
-            <xpath expr="//field[@name='location']" position="after">
-                <group string="Estado de Pago">
-                    <group>
-                        <field name="payment_status"/>
-                        <field name="payment_date"/>
-                    </group>
-                    <group>
-                        <field name="payment_id"/>
-                    </group>
-                </group>
-            </xpath>
-
-            <!-- Agregar notas y comentarios -->
-            <xpath expr="//field[@name='description']" position="after">
-                <group string="Notas y Comentarios">
-                    <field name="shared_notes" placeholder="Notas que el cliente puede ver..."/>
-                    <field name="internal_notes" placeholder="Comentarios internos (no visibles para el cliente)..."/>
-                    <field name="client_preference" placeholder="Preferencias del cliente (horarios, terapeuta preferido, etc.)..."/>
-                </group>
-            </xpath>
-
-            <!-- Agregar información de WhatsApp -->
-            <xpath expr="//field[@name='description']" position="after">
-                <group string="Notificaciones WhatsApp">
-                    <group>
-                        <field name="whatsapp_notification_sent" readonly="1"/>
-                        <field name="whatsapp_reminder_48h_sent" readonly="1"/>
-                    </group>
-                    <group>
-                        <field name="whatsapp_reminder_24h_sent" readonly="1"/>
-                        <field name="whatsapp_reminder_3h_sent" readonly="1"/>
-                    </group>
-                </group>
+                </page>
             </xpath>
         </field>
     </record>
@@ -179,10 +244,22 @@
     <record id="action_calendar_event_cutai" model="ir.actions.act_window">
         <field name="name">Agenda CUTAI</field>
         <field name="res_model">calendar.event</field>
-        <field name="view_mode">calendar,list,form</field>
+        <field name="view_mode">list,calendar,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_calendar_event_list_cutai')}),
+            (0, 0, {'view_mode': 'calendar'}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_calendar_event_form_cutai')})]"/>
         <field name="context">{
-            'search_default_branch_id': active_id,
+            'default_appointment_state': 'scheduled',
         }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea tu primera cita
+            </p>
+            <p>
+                Gestiona las citas de tus clientes con todos los detalles: servicios, precios, sesiones y pagos.
+            </p>
+        </field>
     </record>
 
     <!-- Filtros de búsqueda -->
