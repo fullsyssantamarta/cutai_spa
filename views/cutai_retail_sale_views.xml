@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Ventas Retail -->
+    <record id="view_cutai_retail_sale_tree" model="ir.ui.view">
+        <field name="name">cutai.retail.sale.tree</field>
+        <field name="model">cutai.retail.sale</field>
+        <field name="arch" type="xml">
+            <list string="Ventas Retail">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="partner_id"/>
+                <field name="branch_id"/>
+                <field name="seller_id"/>
+                <field name="total_amount" widget="monetary"/>
+                <field name="commission_amount" widget="monetary"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cutai_retail_sale_form" model="ir.ui.view">
+        <field name="name">cutai.retail.sale.form</field>
+        <field name="model">cutai.retail.sale</field>
+        <field name="arch" type="xml">
+            <form string="Venta Retail">
+                <header>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date"/>
+                            <field name="partner_id"/>
+                            <field name="branch_id"/>
+                        </group>
+                        <group>
+                            <field name="seller_id"/>
+                            <field name="payment_method"/>
+                            <field name="invoice_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Productos">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="quantity"/>
+                                    <field name="price_unit" widget="monetary"/>
+                                    <field name="discount_percentage"/>
+                                    <field name="subtotal" widget="monetary"/>
+                                    <field name="commission_percentage" invisible="1"/>
+                                    <field name="commission" widget="monetary"/>
+                                </list>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="subtotal" widget="monetary"/>
+                                <field name="discount_amount" widget="monetary"/>
+                                <div class="oe_subtotal_footer_separator oe_inline">
+                                    <label for="total_amount"/>
+                                    <field name="total_amount" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary"/>
+                                </div>
+                                <field name="commission_amount" widget="monetary"/>
+                                <field name="currency_id" invisible="1"/>
+                            </group>
+                        </page>
+                        <page string="Notas">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cutai_retail_sale" model="ir.actions.act_window">
+        <field name="name">Ventas Retail</field>
+        <field name="res_model">cutai.retail.sale</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

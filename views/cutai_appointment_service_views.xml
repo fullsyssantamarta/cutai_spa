@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Servicios en Citas -->
+    <record id="view_cutai_appointment_service_tree" model="ir.ui.view">
+        <field name="name">cutai.appointment.service.tree</field>
+        <field name="model">cutai.appointment.service</field>
+        <field name="arch" type="xml">
+            <list string="Servicios en Citas">
+                <field name="appointment_id"/>
+                <field name="service_id"/>
+                <field name="therapist_id"/>
+                <field name="duration_minutes" widget="float_time"/>
+                <field name="price_unit" widget="monetary"/>
+                <field name="commission_amount" widget="monetary"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cutai_appointment_service" model="ir.actions.act_window">
+        <field name="name">Servicios en Citas</field>
+        <field name="res_model">cutai.appointment.service</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

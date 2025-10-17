@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Paquetes -->
+    <record id="view_cutai_package_tree" model="ir.ui.view">
+        <field name="name">cutai.package.tree</field>
+        <field name="model">cutai.package</field>
+        <field name="arch" type="xml">
+            <list string="Paquetes">
+                <field name="name"/>
+                <field name="package_type"/>
+                <field name="price" widget="monetary"/>
+                <field name="total_value" widget="monetary"/>
+                <field name="discount_percentage" widget="percentage"/>
+                <field name="validity_days"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cutai_package_form" model="ir.ui.view">
+        <field name="name">cutai.package.form</field>
+        <field name="model">cutai.package</field>
+        <field name="arch" type="xml">
+            <form string="Paquete">
+                <sheet>
+                    <field name="image_1920" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Nombre del Paquete"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="package_type"/>
+                            <field name="product_id"/>
+                            <field name="validity_days"/>
+                        </group>
+                        <group>
+                            <field name="price" widget="monetary"/>
+                            <field name="total_value" widget="monetary"/>
+                            <field name="discount_percentage" widget="percentage"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Servicios Incluidos">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="service_id"/>
+                                    <field name="quantity"/>
+                                    <field name="price_unit" widget="monetary"/>
+                                    <field name="subtotal" widget="monetary"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Descripción">
+                            <field name="description"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cutai_package" model="ir.actions.act_window">
+        <field name="name">Paquetes y Combos</field>
+        <field name="res_model">cutai.package</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

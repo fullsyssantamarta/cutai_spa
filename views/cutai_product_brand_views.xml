@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Marcas de Productos -->
+    <record id="view_cutai_product_brand_tree" model="ir.ui.view">
+        <field name="name">cutai.product.brand.tree</field>
+        <field name="model">cutai.product.brand</field>
+        <field name="arch" type="xml">
+            <list string="Marcas">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="product_count"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cutai_product_brand" model="ir.actions.act_window">
+        <field name="name">Marcas de Productos</field>
+        <field name="res_model">cutai.product.brand</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

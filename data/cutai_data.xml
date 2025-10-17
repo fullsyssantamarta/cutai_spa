@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="seq_cutai_membership" model="ir.sequence">
+        <field name="name">Membresía CUTAI</field>
+        <field name="code">cutai.membership</field>
+        <field name="prefix">MEM-</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+    <record id="seq_cutai_retail_sale" model="ir.sequence">
+        <field name="name">Venta Retail CUTAI</field>
+        <field name="code">cutai.retail.sale</field>
+        <field name="prefix">RET-</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+    <record id="service_category_laser" model="cutai.service.category">
+        <field name="name">Tratamientos Láser</field>
+        <field name="code">LASER</field>
+        <field name="sequence">10</field>
+        <field name="color">1</field>
+    </record>
+
+    <record id="service_category_facial" model="cutai.service.category">
+        <field name="name">Faciales</field>
+        <field name="code">FACIAL</field>
+        <field name="sequence">20</field>
+        <field name="color">2</field>
+    </record>
+
+    <record id="service_category_corporal" model="cutai.service.category">
+        <field name="name">Tratamientos Corporales</field>
+        <field name="code">CORPORAL</field>
+        <field name="sequence">30</field>
+        <field name="color">3</field>
+    </record>
+
+    <record id="service_category_massage" model="cutai.service.category">
+        <field name="name">Masajes</field>
+        <field name="code">MASSAGE</field>
+        <field name="sequence">40</field>
+        <field name="color">4</field>
+    </record>
+
+    <record id="service_category_waxing" model="cutai.service.category">
+        <field name="name">Depilación con Cera</field>
+        <field name="code">WAXING</field>
+        <field name="sequence">50</field>
+        <field name="color">5</field>
+    </record>
+
+    <record id="service_category_aesthetic" model="cutai.service.category">
+        <field name="name">Tratamientos Estéticos</field>
+        <field name="code">AESTHETIC</field>
+        <field name="sequence">60</field>
+        <field name="color">6</field>
+    </record>
+
+    <record id="service_category_combos" model="cutai.service.category">
+        <field name="name">Paquetes y Combos</field>
+        <field name="code">COMBO</field>
+        <field name="sequence">70</field>
+        <field name="color">7</field>
+    </record>
+
+    <record id="zone_bozo" model="cutai.zone">
+        <field name="name">Bozo</field>
+        <field name="code">BOZO</field>
+        <field name="category">face</field>
+        <field name="sequence">10</field>
+        <field name="estimated_duration">15</field>
+        <field name="recommended_sessions">8</field>
+    </record>
+
+    <record id="zone_menton" model="cutai.zone">
+        <field name="name">Mentón</field>
+        <field name="code">MENTON</field>
+        <field name="category">face</field>
+        <field name="sequence">20</field>
+        <field name="estimated_duration">10</field>
+        <field name="recommended_sessions">8</field>
+    </record>
+
+    <record id="zone_mejillas" model="cutai.zone">
+        <field name="name">Mejillas</field>
+        <field name="code">MEJILLAS</field>
+        <field name="category">face</field>
+        <field name="sequence">30</field>
+        <field name="estimated_duration">20</field>
+        <field name="recommended_sessions">8</field>
+    </record>
+
+    <record id="zone_cejas" model="cutai.zone">
+        <field name="name">Cejas</field>
+        <field name="code">CEJAS</field>
+        <field name="category">face</field>
+        <field name="sequence">40</field>
+        <field name="estimated_duration">15</field>
+        <field name="recommended_sessions">6</field>
+    </record>
+    <record id="zone_axilas" model="cutai.zone">
+        <field name="name">Axilas</field>
+        <field name="code">AXILAS</field>
+        <field name="category">body</field>
+        <field name="sequence">100</field>
+        <field name="estimated_duration">15</field>
+        <field name="recommended_sessions">8</field>
+    </record>
+
+    <record id="zone_brazos_completos" model="cutai.zone">
+        <field name="name">Brazos Completos</field>
+        <field name="code">BRAZOS_COMP</field>
+        <field name="category">body</field>
+        <field name="sequence">110</field>
+        <field name="estimated_duration">40</field>
+        <field name="recommended_sessions">8</field>
+    </record>
+
+    <record id="zone_media_pierna" model="cutai.zone">
+        <field name="name">Media Pierna</field>
+        <field name="code">MEDIA_PIERNA</field>
+        <field name="category">body</field>
+        <field name="sequence">120</field>
+        <field name="estimated_duration">30</field>
+        <field name="recommended_sessions">8</field>
+    </record>
+
+    <record id="zone_pierna_completa" model="cutai.zone">
+        <field name="name">Pierna Completa</field>
+        <field name="code">PIERNA_COMP</field>
+        <field name="category">body</field>
+        <field name="sequence">130</field>
+        <field name="estimated_duration">50</field>
+        <field name="recommended_sessions">8</field>
+    </record>
+
+    <record id="zone_abdomen" model="cutai.zone">
+        <field name="name">Abdomen</field>
+        <field name="code">ABDOMEN</field>
+        <field name="category">body</field>
+        <field name="sequence">140</field>
+        <field name="estimated_duration">30</field>
+        <field name="recommended_sessions">8</field>
+    </record>
+
+    <record id="zone_espalda_completa" model="cutai.zone">
+        <field name="name">Espalda Completa</field>
+        <field name="code">ESPALDA_COMP</field>
+        <field name="category">body</field>
+        <field name="sequence">150</field>
+        <field name="estimated_duration">40</field>
+        <field name="recommended_sessions">8</field>
+    </record>
+    <record id="zone_bikini_basico" model="cutai.zone">
+        <field name="name">Bikini Básico</field>
+        <field name="code">BIKINI_BAS</field>
+        <field name="category">intimate</field>
+        <field name="sequence">200</field>
+        <field name="estimated_duration">15</field>
+        <field name="recommended_sessions">8</field>
+    </record>
+
+    <record id="zone_bikini_completo" model="cutai.zone">
+        <field name="name">Bikini Completo</field>
+        <field name="code">BIKINI_COMP</field>
+        <field name="category">intimate</field>
+        <field name="sequence">210</field>
+        <field name="estimated_duration">25</field>
+        <field name="recommended_sessions">8</field>
+    </record>
+
+    <record id="zone_brasileno" model="cutai.zone">
+        <field name="name">Brasileño</field>
+        <field name="code">BRASILENO</field>
+        <field name="category">intimate</field>
+        <field name="sequence">220</field>
+        <field name="estimated_duration">30</field>
+        <field name="recommended_sessions">8</field>
+    </record>
+
+    <record id="product_backbar_sheets" model="product.product">
+        <field name="name">Hojas Camilla</field>
+        <field name="type">consu</field>
+        <field name="is_backbar_product" eval="True"/>
+        <field name="backbar_category">sheets</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+    </record>
+
+    <record id="product_backbar_gel" model="product.product">
+        <field name="name">Gel Conductor</field>
+        <field name="type">consu</field>
+        <field name="is_backbar_product" eval="True"/>
+        <field name="backbar_category">gel</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+    </record>
+
+    <record id="product_backbar_towels" model="product.product">
+        <field name="name">Toallas</field>
+        <field name="type">consu</field>
+        <field name="is_backbar_product" eval="True"/>
+        <field name="backbar_category">towels</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+    </record>
+
+    <record id="product_backbar_cryogen" model="product.product">
+        <field name="name">Criógeno (Estimado)</field>
+        <field name="type">consu</field>
+        <field name="is_backbar_product" eval="True"/>
+        <field name="backbar_category">cryogen</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+    </record>
+    <record id="backbar_config_sheets_all" model="cutai.backbar.product">
+        <field name="product_id" ref="product_backbar_sheets"/>
+        <field name="consumption_type">per_session</field>
+        <field name="default_quantity">2</field>
+        <field name="zone_ids" eval="[(6, 0, [
+                ref('zone_axilas'),
+                ref('zone_brazos_completos'),
+                ref('zone_media_pierna'),
+                ref('zone_pierna_completa'),
+                ref('zone_bikini_basico'),
+                ref('zone_bikini_completo'),
+                ref('zone_brasileno')
+            ])]"/>
+    </record>
+
+    <record id="backbar_config_gel_body" model="cutai.backbar.product">
+        <field name="product_id" ref="product_backbar_gel"/>
+        <field name="consumption_type">per_session</field>
+        <field name="default_quantity">1</field>
+        <field name="zone_ids" eval="[(6, 0, [
+                ref('zone_axilas'),
+                ref('zone_brazos_completos'),
+                ref('zone_media_pierna'),
+                ref('zone_pierna_completa'),
+                ref('zone_abdomen'),
+                ref('zone_espalda_completa'),
+                ref('zone_bikini_basico'),
+                ref('zone_bikini_completo'),
+                ref('zone_brasileno')
+            ])]"/>
+    </record>
+
+    <record id="backbar_config_towels_all" model="cutai.backbar.product">
+        <field name="product_id" ref="product_backbar_towels"/>
+        <field name="consumption_type">per_session</field>
+        <field name="default_quantity">1</field>
+    </record>
+
+    <record id="ir_cron_check_late_payments" model="ir.cron">
+        <field name="name">CUTAI: Revisar Pagos Atrasados</field>
+        <field name="model_id" ref="model_cutai_membership"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_check_late_payments()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="ir_cron_send_payment_reminders" model="ir.cron">
+        <field name="name">CUTAI: Enviar Recordatorios de Pago</field>
+        <field name="model_id" ref="model_cutai_membership"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_send_payment_reminders()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

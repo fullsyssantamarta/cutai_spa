@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .logo {
+            max-width: 300px;
+            margin: 20px auto;
+            display: block;
+        }
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin: 20px 0;
+            text-align: center;
+        }
+        h2 {
+            color: #3498db;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #e74c3c;
+            margin-top: 25px;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .feature-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .feature-box h4 {
+            margin-top: 0;
+            font-size: 1.2em;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            padding-bottom: 10px;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 20px;
+            border-left: 5px solid #ffc107;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+            min-width: 150px;
+        }
+        .stat-number {
+            font-size: 3em;
+            color: #3498db;
+            font-weight: bold;
+        }
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #ecf0f1;
+            color: #7f8c8d;
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 10px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: transform 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="icon.png" alt="CUTAI Logo" class="logo">
+            <h1>CUTAI Laser Spa Management</h1>
+            <p style="font-size: 1.2em; color: #7f8c8d;">Sistema Integral de Gestión para SPA Láser y Clínica Estética</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number">15+</div>
+                <div class="stat-label">Modelos de Datos</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">7</div>
+                <div class="stat-label">Categorías de Servicios</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Plantillas de Email</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Funcional</div>
+            </div>
+        </div>
+
+        <div class="highlight">
+            <strong>Sistema completo diseñado específicamente para clínicas SPA y centros de depilación láser.</strong>
+            Controla todas las operaciones desde la agenda hasta la facturación, inventario, comisiones y reportes.
+        </div>
+
+        <h2>Características Principales</h2>
+
+        <div class="feature-grid">
+            <div class="feature-box">
+                <h4>👥 Gestión de Clientes</h4>
+                <ul class="feature-list">
+                    <li>Fototipo de piel</li>
+                    <li>Historial médico</li>
+                    <li>Consentimientos</li>
+                    <li>Alergias</li>
+                </ul>
+            </div>
+
+            <div class="feature-box">
+                <h4>💆 Servicios SPA</h4>
+                <ul class="feature-list">
+                    <li>Tratamientos láser</li>
+                    <li>Faciales</li>
+                    <li>Masajes</li>
+                    <li>Corporales</li>
+                </ul>
+            </div>
+
+            <div class="feature-box">
+                <h4>🎁 Paquetes</h4>
+                <ul class="feature-list">
+                    <li>Combos de servicios</li>
+                    <li>Paquetes de sesiones</li>
+                    <li>Descuentos automáticos</li>
+                    <li>Vigencia configurable</li>
+                </ul>
+            </div>
+
+            <div class="feature-box">
+                <h4>📅 Agenda Inteligente</h4>
+                <ul class="feature-list">
+                    <li>Multi-servicio</li>
+                    <li>Control de cabinas</li>
+                    <li>Terapeutas asignados</li>
+                    <li>Recordatorios auto</li>
+                </ul>
+            </div>
+
+            <div class="feature-box">
+                <h4>💳 Membresías</h4>
+                <ul class="feature-list">
+                    <li>9 ciclos de pago</li>
+                    <li>Moras automáticas</li>
+                    <li>Congelamiento</li>
+                    <li>Cancelación</li>
+                </ul>
+            </div>
+
+            <div class="feature-box">
+                <h4>🛍️ Retail</h4>
+                <ul class="feature-list">
+                    <li>Venta de productos</li>
+                    <li>Comisiones</li>
+                    <li>Control de marcas</li>
+                    <li>Inventario</li>
+                </ul>
+            </div>
+
+            <div class="feature-box">
+                <h4>📦 Inventario</h4>
+                <ul class="feature-list">
+                    <li>Backbar automático</li>
+                    <li>Productos retail</li>
+                    <li>Stock por sucursal</li>
+                    <li>Alertas mínimo</li>
+                </ul>
+            </div>
+
+            <div class="feature-box">
+                <h4>💰 Comisiones</h4>
+                <ul class="feature-list">
+                    <li>Terapeutas</li>
+                    <li>Vendedores</li>
+                    <li>Propinas</li>
+                    <li>Reportes</li>
+                </ul>
+            </div>
+
+            <div class="feature-box">
+                <h4>🏢 Multi-Sucursal</h4>
+                <ul class="feature-list">
+                    <li>Sucursales ilimitadas</li>
+                    <li>Cabinas por tipo</li>
+                    <li>Máquinas láser</li>
+                    <li>Control mantención</li>
+                </ul>
+            </div>
+
+            <div class="feature-box">
+                <h4>📧 Comunicaciones</h4>
+                <ul class="feature-list">
+                    <li>Email T-48h/24h/3h</li>
+                    <li>WhatsApp</li>
+                    <li>Encuestas</li>
+                    <li>Cumpleaños</li>
+                </ul>
+            </div>
+
+            <div class="feature-box">
+                <h4>📊 Reportes</h4>
+                <ul class="feature-list">
+                    <li>Dashboard diario</li>
+                    <li>KPIs semanales</li>
+                    <li>Análisis mensual</li>
+                    <li>Financieros</li>
+                </ul>
+            </div>
+
+            <div class="feature-box">
+                <h4>🔒 Seguridad</h4>
+                <ul class="feature-list">
+                    <li>4 niveles acceso</li>
+                    <li>Permisos granulares</li>
+                    <li>Auditoría</li>
+                    <li>Trazabilidad</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>Beneficios del Sistema</h2>
+
+        <h3>Operativos</h3>
+        <ul>
+            <li>Control total de agenda con recursos (cabinas, máquinas, terapeutas)</li>
+            <li>No más doble reserva - sistema inteligente de disponibilidad</li>
+            <li>Recordatorios automáticos = menos no-shows (hasta 40% reducción)</li>
+            <li>Consumo backbar controlado automáticamente</li>
+            <li>Inventario retail en tiempo real</li>
+        </ul>
+
+        <h3>Financieros</h3>
+        <ul>
+            <li>Comisiones calculadas automáticamente por servicio y venta</li>
+            <li>Control completo de membresías y ciclos de pago</li>
+            <li>Moras aplicadas automáticamente según política</li>
+            <li>Facturación integrada con contabilidad</li>
+            <li>Reportes financieros precisos (P&L, cash flow, impuestos)</li>
+        </ul>
+
+        <h3>Comerciales</h3>
+        <ul>
+            <li>Paquetes y promociones flexibles</li>
+            <li>Seguimiento de satisfacción del cliente (NPS)</li>
+            <li>Historial completo por cliente para mejor atención</li>
+            <li>Oportunidades de upselling basadas en historial</li>
+            <li>Fidelización con membresías y programas de lealtad</li>
+        </ul>
+
+        <h3>Gerenciales</h3>
+        <ul>
+            <li>KPIs en tiempo real por sucursal</li>
+            <li>Reportes de ocupación y productividad</li>
+            <li>Análisis de rentabilidad por servicio</li>
+            <li>Control de desempeño de terapeutas y vendedores</li>
+            <li>Toma de decisiones basada en datos reales</li>
+        </ul>
+
+        <h2>Flujos de Trabajo Implementados</h2>
+
+        <div class="highlight">
+            <strong>Cliente Nuevo → Membresía → Tratamiento</strong><br>
+            1. Crear cliente con historial médico<br>
+            2. Cargar consentimiento informado<br>
+            3. Crear membresía de 9 pagos<br>
+            4. Sistema genera calendario automático<br>
+            5. Crear tratamiento por zona<br>
+            6. Programar primera sesión<br>
+            7. Cliente recibe recordatorios T-48h, T-24h, T-3h
+        </div>
+
+        <div class="highlight">
+            <strong>Servicio SPA Estándar</strong><br>
+            1. Cliente agenda cita (online o teléfono)<br>
+            2. Se asigna terapeuta y cabina<br>
+            3. Cliente recibe confirmación por WhatsApp<br>
+            4. Recordatorios automáticos<br>
+            5. Terapeuta marca servicio como "en proceso"<br>
+            6. Al completar: calificación y comisión automática<br>
+            7. Cliente recibe encuesta de satisfacción
+        </div>
+
+        <h2>Configuración Inicial Rápida</h2>
+
+        <ol style="font-size: 1.1em; line-height: 1.8;">
+            <li><strong>Sucursales:</strong> Crear tus locales con dirección y contacto</li>
+            <li><strong>Cabinas:</strong> Configurar salas (estándar, VIP, láser, dobles)</li>
+            <li><strong>Máquinas:</strong> Registrar equipos láser con especificaciones</li>
+            <li><strong>Servicios:</strong> Revisar catálogo pre-configurado (láser, faciales, masajes)</li>
+            <li><strong>Paquetes:</strong> Crear combos y promociones atractivas</li>
+            <li><strong>Comisiones:</strong> Configurar % por servicio para terapeutas</li>
+            <li><strong>Productos Retail:</strong> Cargar cosméticos y cremas para venta</li>
+            <li><strong>Personal:</strong> Crear usuarios con permisos adecuados</li>
+        </ol>
+
+        <div class="highlight" style="background: #d4edda; border-left-color: #28a745;">
+            <strong>Todo listo para comenzar a operar en minutos!</strong><br>
+            El sistema incluye datos de ejemplo y configuraciones recomendadas.
+        </div>
+
+        <h2>Soporte y Documentación</h2>
+
+        <ul style="font-size: 1.1em; line-height: 1.8;">
+            <li><strong>Manual Completo:</strong> CUTAI_SPA_MANUAL_COMPLETO.md (400+ líneas)</li>
+            <li><strong>README:</strong> Documentación técnica detallada</li>
+            <li><strong>Código Documentado:</strong> Comentarios extensos en español</li>
+            <li><strong>Flujos de Trabajo:</strong> Diagramas y explicaciones paso a paso</li>
+        </ul>
+
+        <div class="footer">
+            <img src="icon.png" alt="FullSys Logo" style="max-width: 150px; margin-bottom: 20px;">
+            <p><strong>Desarrollado por FullSys Tecnología Santa Marta</strong></p>
+            <p>
+                <a href="https://www.fullsys.com.co" class="btn" target="_blank">Sitio Web</a>
+                <a href="mailto:soporte@fullsys.com.co" class="btn">Soporte</a>
+            </p>
+            <p style="margin-top: 20px;">
+                <strong>Licencia:</strong> LGPL-3<br>
+                <strong>Versión:</strong> 18.0.1.0.0 (Octubre 2025)<br>
+                <strong>Compatible con:</strong> Odoo 18 Enterprise
+            </p>
+        </div>
+    </div>
+</body>
+</html>

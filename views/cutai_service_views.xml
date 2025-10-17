@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Servicios -->
+    <record id="view_cutai_service_tree" model="ir.ui.view">
+        <field name="name">cutai.service.tree</field>
+        <field name="model">cutai.service</field>
+        <field name="arch" type="xml">
+            <list string="Servicios">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="category_id"/>
+                <field name="service_type"/>
+                <field name="duration_minutes" widget="float_time"/>
+                <field name="price" widget="monetary"/>
+                <field name="commission_type"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cutai_service_form" model="ir.ui.view">
+        <field name="name">cutai.service.form</field>
+        <field name="model">cutai.service</field>
+        <field name="arch" type="xml">
+            <form string="Servicio">
+                <sheet>
+                    <field name="image_1920" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Nombre del Servicio"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="category_id"/>
+                            <field name="service_type"/>
+                            <field name="product_id"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="duration_minutes" widget="float_time"/>
+                            <field name="price" widget="monetary"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Comisiones">
+                            <group>
+                                <group>
+                                    <field name="commission_type"/>
+                                    <field name="commission_percentage" invisible="commission_type != 'percentage'"/>
+                                    <field name="commission_amount" invisible="commission_type != 'fixed'"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Recursos">
+                            <group>
+                                <group>
+                                    <field name="requires_machine"/>
+                                    <field name="machine_ids" widget="many2many_tags" invisible="requires_machine == False"/>
+                                </group>
+                                <group>
+                                    <field name="requires_cabin"/>
+                                    <field name="cabin_type" invisible="requires_cabin == False"/>
+                                </group>
+                            </group>
+                            <group string="Productos Backbar">
+                                <field name="backbar_product_ids" widget="many2many_tags"/>
+                            </group>
+                            <group string="Zonas Aplicables" invisible="service_type != 'laser'">
+                                <field name="zone_ids" widget="many2many_tags"/>
+                            </group>
+                        </page>
+                        <page string="Descripción">
+                            <field name="description"/>
+                        </page>
+                        <page string="Instrucciones">
+                            <field name="instructions"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cutai_service_kanban" model="ir.ui.view">
+        <field name="name">cutai.service.kanban</field>
+        <field name="model">cutai.service</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <field name="price"/>
+                <field name="duration_minutes"/>
+                <field name="image_1920"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_image">
+                                <img t-att-src="kanban_image('cutai.service', 'image_1920', record.id.raw_value)" alt="Servicio"/>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title"><field name="name"/></strong>
+                                <div class="o_kanban_record_subtitle">
+                                    <field name="category_id"/>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <field name="duration_minutes" widget="float_time"/> min
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <field name="price" widget="monetary"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="action_cutai_service" model="ir.actions.act_window">
+        <field name="name">Servicios</field>
+        <field name="res_model">cutai.service</field>
+        <field name="view_mode">kanban,list,form</field>
+    </record>
+
+</odoo>

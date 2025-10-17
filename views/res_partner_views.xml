@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Vista de formulario extendida para res.partner -->
+    <record id="view_partner_form_cutai" model="ir.ui.view">
+        <field name="name">res.partner.form.cutai</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Información CUTAI" invisible="is_cutai_client == False">
+                    <group>
+                        <group string="Datos Clínicos">
+                            <field name="is_cutai_client"/>
+                            <field name="phototype"/>
+                            <field name="active_zones" widget="many2many_tags"/>
+                            <field name="uses_contraceptives"/>
+                            <field name="has_pcos"/>
+                            <field name="allergy_info"/>
+                        </group>
+                        <group string="Consentimiento">
+                            <field name="consent_valid"/>
+                            <field name="consent_date"/>
+                            <field name="consent_document_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Estadísticas">
+                            <field name="total_sessions_count"/>
+                            <field name="last_appointment_date"/>
+                            <field name="next_appointment_date"/>
+                        </group>
+                        <group string="Membresía Activa">
+                            <field name="active_membership_id"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

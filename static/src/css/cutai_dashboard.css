@@ -1,0 +1,24 @@
+/* Dashboard CSS */
+.cutai_dashboard {
+    padding: 20px;
+}
+
+.cutai_kpi_box {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.cutai_kpi_value {
+    font-size: 32px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.cutai_kpi_label {
+    font-size: 14px;
+    color: #7f8c8d;
+    margin-top: 5px;
+}

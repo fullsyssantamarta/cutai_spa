@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Sucursales -->
+    <record id="view_cutai_branch_tree" model="ir.ui.view">
+        <field name="name">cutai.branch.tree</field>
+        <field name="model">cutai.branch</field>
+        <field name="arch" type="xml">
+            <list string="Sucursales">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="manager_id"/>
+                <field name="cabin_count"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cutai_branch" model="ir.actions.act_window">
+        <field name="name">Sucursales</field>
+        <field name="res_model">cutai.branch</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Cabinas -->
+    <record id="view_cutai_cabin_tree" model="ir.ui.view">
+        <field name="name">cutai.cabin.tree</field>
+        <field name="model">cutai.cabin</field>
+        <field name="arch" type="xml">
+            <list string="Cabinas">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="branch_id"/>
+                <field name="capacity"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cutai_cabin" model="ir.actions.act_window">
+        <field name="name">Cabinas</field>
+        <field name="res_model">cutai.cabin</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Máquinas -->
+    <record id="view_cutai_machine_tree" model="ir.ui.view">
+        <field name="name">cutai.machine.tree</field>
+        <field name="model">cutai.machine</field>
+        <field name="arch" type="xml">
+            <list string="Máquinas">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="branch_id"/>
+                <field name="technology"/>
+                <field name="status"/>
+                <field name="next_maintenance_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cutai_machine" model="ir.actions.act_window">
+        <field name="name">Máquinas</field>
+        <field name="res_model">cutai.machine</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Zonas -->
+    <record id="view_cutai_zone_tree" model="ir.ui.view">
+        <field name="name">cutai.zone.tree</field>
+        <field name="model">cutai.zone</field>
+        <field name="arch" type="xml">
+            <list string="Zonas de Tratamiento">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="category"/>
+                <field name="estimated_duration"/>
+                <field name="recommended_sessions"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cutai_zone" model="ir.actions.act_window">
+        <field name="name">Zonas de Tratamiento</field>
+        <field name="res_model">cutai.zone</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Promociones -->
+    <record id="view_cutai_promotion_tree" model="ir.ui.view">
+        <field name="name">cutai.promotion.tree</field>
+        <field name="model">cutai.promotion</field>
+        <field name="arch" type="xml">
+            <list string="Promociones">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="promotion_type"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cutai_promotion" model="ir.actions.act_window">
+        <field name="name">Promociones</field>
+        <field name="res_model">cutai.promotion</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

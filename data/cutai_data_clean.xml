@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="seq_cutai_membership" model="ir.sequence">
+            <field name="name">Membresia CUTAI</field>
+            <field name="code">cutai.membership</field>
+            <field name="prefix">MEM-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_cutai_retail_sale" model="ir.sequence">
+            <field name="name">Venta Retail CUTAI</field>
+            <field name="code">cutai.retail.sale</field>
+            <field name="prefix">RET-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_cutai_treatment" model="ir.sequence">
+            <field name="name">Tratamiento CUTAI</field>
+            <field name="code">cutai.treatment</field>
+            <field name="prefix">TREAT-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="service_category_laser" model="cutai.service.category">
+            <field name="name">Tratamientos Laser</field>
+            <field name="code">LASER</field>
+            <field name="sequence">10</field>
+            <field name="color">1</field>
+        </record>
+
+        <record id="service_category_facial" model="cutai.service.category">
+            <field name="name">Faciales</field>
+            <field name="code">FACIAL</field>
+            <field name="sequence">20</field>
+            <field name="color">2</field>
+        </record>
+
+        <record id="service_category_corporal" model="cutai.service.category">
+            <field name="name">Tratamientos Corporales</field>
+            <field name="code">CORPORAL</field>
+            <field name="sequence">30</field>
+            <field name="color">3</field>
+        </record>
+
+        <record id="zone_axila" model="cutai.zone">
+            <field name="name">Axila</field>
+            <field name="code">AXILA</field>
+            <field name="category">body</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="zone_bikini" model="cutai.zone">
+            <field name="name">Bikini</field>
+            <field name="code">BIKINI</field>
+            <field name="category">intimate</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <record id="zone_piernas_completas" model="cutai.zone">
+            <field name="name">Piernas Completas</field>
+            <field name="code">PIERNAS_FULL</field>
+            <field name="category">body</field>
+            <field name="sequence">30</field>
+        </record>
+
+        <record id="zone_brazos_completos" model="cutai.zone">
+            <field name="name">Brazos Completos</field>
+            <field name="code">BRAZOS_FULL</field>
+            <field name="category">body</field>
+            <field name="sequence">40</field>
+        </record>
+
+        <record id="zone_rostro" model="cutai.zone">
+            <field name="name">Rostro Completo</field>
+            <field name="code">ROSTRO</field>
+            <field name="category">face</field>
+            <field name="sequence">50</field>
+        </record>
+
+        <record id="zone_espalda" model="cutai.zone">
+            <field name="name">Espalda</field>
+            <field name="code">ESPALDA</field>
+            <field name="category">body</field>
+            <field name="sequence">60</field>
+        </record>
+
+        <record id="service_category_massage" model="cutai.service.category">
+            <field name="name">Masajes</field>
+            <field name="code">MASSAGE</field>
+            <field name="sequence">40</field>
+            <field name="color">4</field>
+        </record>
+
+        <record id="service_category_aesthetic" model="cutai.service.category">
+            <field name="name">Estetica</field>
+            <field name="code">AESTHETIC</field>
+            <field name="sequence">50</field>
+            <field name="color">5</field>
+        </record>
+
+        <record id="service_category_wellness" model="cutai.service.category">
+            <field name="name">Bienestar</field>
+            <field name="code">WELLNESS</field>
+            <field name="sequence">60</field>
+            <field name="color">6</field>
+        </record>
+
+        <record id="service_category_packages" model="cutai.service.category">
+            <field name="name">Paquetes</field>
+            <field name="code">PACKAGES</field>
+            <field name="sequence">70</field>
+            <field name="color">7</field>
+        </record>
+
+        <record id="zone_labio_superior" model="cutai.zone">
+            <field name="name">Labio Superior</field>
+            <field name="code">LABIO_SUP</field>
+            <field name="category">face</field>
+            <field name="sequence">70</field>
+        </record>
+
+        <record id="zone_menton" model="cutai.zone">
+            <field name="name">Menton</field>
+            <field name="code">MENTON</field>
+            <field name="category">face</field>
+            <field name="sequence">80</field>
+        </record>
+
+        <record id="zone_abdomen" model="cutai.zone">
+            <field name="name">Abdomen</field>
+            <field name="code">ABDOMEN</field>
+            <field name="category">body</field>
+            <field name="sequence">90</field>
+        </record>
+
+        <record id="zone_gluteos" model="cutai.zone">
+            <field name="name">Gluteos</field>
+            <field name="code">GLUTEOS</field>
+            <field name="category">body</field>
+            <field name="sequence">100</field>
+        </record>
+
+        <record id="zone_pecho" model="cutai.zone">
+            <field name="name">Pecho</field>
+            <field name="code">PECHO</field>
+            <field name="category">body</field>
+            <field name="sequence">110</field>
+        </record>
+
+        <record id="zone_brasilero" model="cutai.zone">
+            <field name="name">Brasilero Completo</field>
+            <field name="code">BRASILERO</field>
+            <field name="category">intimate</field>
+            <field name="sequence">120</field>
+        </record>
+
+        <record id="zone_media_pierna" model="cutai.zone">
+            <field name="name">Media Pierna</field>
+            <field name="code">MEDIA_PIERNA</field>
+            <field name="category">body</field>
+            <field name="sequence">130</field>
+        </record>
+
+        <record id="zone_medio_brazo" model="cutai.zone">
+            <field name="name">Medio Brazo</field>
+            <field name="code">MEDIO_BRAZO</field>
+            <field name="category">body</field>
+            <field name="sequence">140</field>
+        </record>
+
+        <record id="zone_cuello" model="cutai.zone">
+            <field name="name">Cuello</field>
+            <field name="code">CUELLO</field>
+            <field name="category">body</field>
+            <field name="sequence">150</field>
+        </record>
+    </data>
+</odoo>

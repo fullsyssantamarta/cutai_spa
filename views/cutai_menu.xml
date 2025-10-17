@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Menú Principal CUTAI -->
+    <menuitem id="menu_cutai_root"
+              name="CUTAI"
+              sequence="10"
+              web_icon="cutai_laser_clinic,static/description/icon.png"/>
+
+    <!-- Clientes -->
+    <menuitem id="menu_cutai_clients"
+              name="Clientes"
+              parent="menu_cutai_root"
+              sequence="10"/>
+
+    <menuitem id="menu_cutai_clients_all"
+              name="Todos los Clientes"
+              parent="menu_cutai_clients"
+              action="contacts.action_contacts"
+              sequence="10"/>
+
+    <!-- Membresías -->
+    <menuitem id="menu_cutai_memberships"
+              name="Membresías"
+              parent="menu_cutai_root"
+              sequence="20"/>
+
+    <menuitem id="menu_cutai_memberships_all"
+              name="Todas las Membresías"
+              parent="menu_cutai_memberships"
+              action="action_cutai_membership"
+              sequence="10"/>
+
+    <menuitem id="menu_cutai_membership_payments"
+              name="Pagos"
+              parent="menu_cutai_memberships"
+              action="action_cutai_membership_payment"
+              sequence="20"/>
+
+    <!-- Tratamientos -->
+    <menuitem id="menu_cutai_treatments"
+              name="Tratamientos"
+              parent="menu_cutai_root"
+              sequence="30"/>
+
+    <menuitem id="menu_cutai_treatments_all"
+              name="Todos los Tratamientos"
+              parent="menu_cutai_treatments"
+              action="action_cutai_treatment"
+              sequence="10"/>
+
+    <menuitem id="menu_cutai_sessions"
+              name="Sesiones"
+              parent="menu_cutai_treatments"
+              action="action_cutai_session"
+              sequence="20"/>
+
+    <!-- Agenda -->
+    <menuitem id="menu_cutai_calendar"
+              name="Agenda"
+              parent="menu_cutai_root"
+              action="calendar.action_calendar_event"
+              sequence="40"/>
+
+    <!-- Servicios SPA -->
+    <menuitem id="menu_cutai_services"
+              name="Servicios"
+              parent="menu_cutai_root"
+              sequence="45"/>
+
+    <menuitem id="menu_cutai_services_all"
+              name="Todos los Servicios"
+              parent="menu_cutai_services"
+              action="action_cutai_service"
+              sequence="10"/>
+
+    <menuitem id="menu_cutai_packages"
+              name="Paquetes y Combos"
+              parent="menu_cutai_services"
+              action="action_cutai_package"
+              sequence="20"/>
+
+    <menuitem id="menu_cutai_service_categories"
+              name="Categorías"
+              parent="menu_cutai_services"
+              action="action_cutai_service_category"
+              sequence="30"/>
+
+    <!-- Retail -->
+    <menuitem id="menu_cutai_retail"
+              name="Retail"
+              parent="menu_cutai_root"
+              sequence="47"/>
+
+    <menuitem id="menu_cutai_retail_sales"
+              name="Ventas Retail"
+              parent="menu_cutai_retail"
+              action="action_cutai_retail_sale"
+              sequence="10"/>
+
+    <menuitem id="menu_cutai_product_brands"
+              name="Marcas"
+              parent="menu_cutai_retail"
+              action="action_cutai_product_brand"
+              sequence="20"/>
+
+    <!-- Inventario Backbar -->
+    <menuitem id="menu_cutai_inventory"
+              name="Inventario"
+              parent="menu_cutai_root"
+              sequence="50"/>
+
+    <menuitem id="menu_cutai_backbar_consumption"
+              name="Consumo Backbar"
+              parent="menu_cutai_inventory"
+              action="action_cutai_backbar_consumption"
+              sequence="10"/>
+
+    <menuitem id="menu_cutai_backbar_products"
+              name="Productos Backbar"
+              parent="menu_cutai_inventory"
+              action="action_cutai_backbar_product"
+              sequence="20"/>
+
+    <!-- Reportes -->
+    <menuitem id="menu_cutai_reports"
+              name="Reportes"
+              parent="menu_cutai_root"
+              sequence="60"/>
+
+    <menuitem id="menu_cutai_dashboard"
+              name="Dashboard"
+              parent="menu_cutai_reports"
+              action="action_cutai_dashboard"
+              sequence="10"/>
+
+    <!-- Configuración -->
+    <menuitem id="menu_cutai_config"
+              name="Configuración"
+              parent="menu_cutai_root"
+              sequence="100"/>
+
+    <menuitem id="menu_cutai_branches"
+              name="Sucursales"
+              parent="menu_cutai_config"
+              action="action_cutai_branch"
+              sequence="10"/>
+
+    <menuitem id="menu_cutai_cabins"
+              name="Cabinas"
+              parent="menu_cutai_config"
+              action="action_cutai_cabin"
+              sequence="20"/>
+
+    <menuitem id="menu_cutai_machines"
+              name="Máquinas"
+              parent="menu_cutai_config"
+              action="action_cutai_machine"
+              sequence="30"/>
+
+    <menuitem id="menu_cutai_zones"
+              name="Zonas de Tratamiento"
+              parent="menu_cutai_config"
+              action="action_cutai_zone"
+              sequence="40"/>
+
+    <menuitem id="menu_cutai_promotions"
+              name="Promociones"
+              parent="menu_cutai_config"
+              action="action_cutai_promotion"
+              sequence="50"/>
+
+</odoo>

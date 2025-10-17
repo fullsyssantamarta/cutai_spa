@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Categorías de Seguridad -->
+    <record id="module_category_cutai" model="ir.module.category">
+        <field name="name">CUTAI Laser Clinic</field>
+        <field name="description">Gestión de clínica de depilación láser</field>
+        <field name="sequence">30</field>
+    </record>
+
+        <!-- Grupo: Usuario CUTAI -->
+        <record id="group_cutai_user" model="res.groups">
+            <field name="name">Usuario</field>
+            <field name="category_id" ref="module_category_cutai"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- Grupo: Operador/Técnico CUTAI -->
+        <record id="group_cutai_operator" model="res.groups">
+            <field name="name">Operador/Técnico</field>
+            <field name="category_id" ref="module_category_cutai"/>
+            <field name="implied_ids" eval="[(4, ref('group_cutai_user'))]"/>
+        </record>
+
+        <!-- Grupo: Manager CUTAI -->
+        <record id="group_cutai_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="module_category_cutai"/>
+            <field name="implied_ids" eval="[(4, ref('group_cutai_operator'))]"/>
+        </record>
+
+        <!-- Grupo: Administrador CUTAI -->
+        <record id="group_cutai_admin" model="res.groups">
+            <field name="name">Administrador</field>
+            <field name="category_id" ref="module_category_cutai"/>
+            <field name="implied_ids" eval="[(4, ref('group_cutai_manager'))]"/>
+        </record>
+
+</odoo>

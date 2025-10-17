@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Recordatorio T-48h -->
+    <record id="email_template_reminder_48h" model="mail.template">
+        <field name="name">CUTAI: Recordatorio de Cita (T-48h)</field>
+        <field name="model_id" ref="calendar.model_calendar_event"/>
+            <field name="subject">Recordatorio: Cita en CUTAI - ${object.start.strftime('%d/%m/%Y')}</field>
+            <field name="email_from">${object.user_id.email or ''}</field>
+            <field name="email_to">${object.partner_ids[0].email if object.partner_ids else ''}</field>
+            <field name="body_html" type="html">
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+    <h2 style="color: #2c3e50;">Recordatorio de Cita</h2>
+    <p>Hola <strong>${object.partner_ids[0].name if object.partner_ids else ''}</strong>,</p>
+    <p>Te recordamos que tienes una cita programada en CUTAI:</p>
+    <div style="background-color: #f8f9fa; padding: 15px; border-left: 4px solid #3498db; margin: 20px 0;">
+        <p style="margin: 5px 0;"><strong>Fecha:</strong> ${object.start.strftime('%d de %B de %Y')}</p>
+        <p style="margin: 5px 0;"><strong>Hora:</strong> ${object.start.strftime('%I:%M %p')}</p>
+        <p style="margin: 5px 0;" t-if="object.branch_id"><strong>Sucursal:</strong> ${object.branch_id.name}</p>
+        <p style="margin: 5px 0;" t-if="object.zone_id"><strong>Tratamiento:</strong> ${object.zone_id.name}</p>
+    </div>
+    <p><strong>Recomendaciones antes de tu cita:</strong></p>
+    <ul>
+        <li>No te expongas al sol 48 horas antes del tratamiento</li>
+        <li>Evita el uso de autobronceadores</li>
+        <li>Rasura el área a tratar el día antes o el mismo día</li>
+        <li>Llega con la piel limpia, sin cremas ni maquillaje</li>
+    </ul>
+    <p>Si necesitas reagendar o cancelar, por favor contáctanos con al menos 24 horas de anticipación.</p>
+    <p>Nos vemos pronto,<br/>Equipo CUTAI</p>
+</div>
+            </field>
+        </record>
+
+        <!-- Recordatorio T-24h -->
+        <record id="email_template_reminder_24h" model="mail.template">
+            <field name="name">CUTAI: Recordatorio de Cita (T-24h)</field>
+            <field name="model_id" ref="calendar.model_calendar_event"/>
+            <field name="subject">Tu cita en CUTAI es mañana - ${object.start.strftime('%d/%m/%Y')}</field>
+            <field name="email_from">${object.user_id.email or ''}</field>
+            <field name="email_to">${object.partner_ids[0].email if object.partner_ids else ''}</field>
+            <field name="body_html" type="html">
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+    <h2 style="color: #2c3e50;">Tu cita es mañana</h2>
+    <p>Hola <strong>${object.partner_ids[0].name if object.partner_ids else ''}</strong>,</p>
+    <p>Confirmamos tu cita para mañana:</p>
+    <div style="background-color: #e8f4f8; padding: 15px; border-left: 4px solid #27ae60; margin: 20px 0;">
+        <p style="margin: 5px 0;"><strong>Mañana</strong> ${object.start.strftime('%d de %B')}</p>
+        <p style="margin: 5px 0;"><strong>Hora:</strong> ${object.start.strftime('%I:%M %p')}</p>
+        <p style="margin: 5px 0;" t-if="object.branch_id"><strong>Sucursal:</strong> ${object.branch_id.name}</p>
+    </div>
+    <p><strong>Último recordatorio:</strong> Rasura el área a tratar y llega con la piel limpia.</p>
+    <p>Te esperamos,<br/>Equipo CUTAI</p>
+</div>
+            </field>
+        </record>
+
+        <!-- Recordatorio T-3h (SMS) -->
+        <record id="sms_template_reminder_3h" model="mail.template">
+            <field name="name">CUTAI: Recordatorio SMS (T-3h)</field>
+            <field name="model_id" ref="calendar.model_calendar_event"/>
+            <field name="body_html" type="html">
+Hola ${object.partner_ids[0].name if object.partner_ids else ''}! Te recordamos tu cita en CUTAI hoy a las ${object.start.strftime('%I:%M %p')}. Te esperamos.
+            </field>
+        </record>
+
+        <!-- Política de No-Show -->
+        <record id="email_template_no_show_policy" model="mail.template">
+            <field name="name">CUTAI: Política de No-Show</field>
+            <field name="model_id" ref="model_cutai_session"/>
+            <field name="subject">Información importante sobre tu cita - CUTAI</field>
+            <field name="email_from">${user.email or ''}</field>
+            <field name="email_to">${object.partner_id.email or ''}</field>
+            <field name="body_html" type="html">
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+    <h2 style="color: #e74c3c;">Política de Cancelación</h2>
+    <p>Hola <strong>${object.partner_id.name}</strong>,</p>
+    <p>Notamos que no asististe a tu cita programada el ${object.appointment_id.start.strftime('%d/%m/%Y')}.</p>
+    <p>Te recordamos nuestra política de cancelación:</p>
+    <div style="background-color: #fff3cd; padding: 15px; border-left: 4px solid #ffc107; margin: 20px 0;">
+        <ul>
+            <li>Las cancelaciones deben hacerse con al menos 24 horas de anticipación</li>
+            <li>No shows repetidos pueden resultar en cargos adicionales</li>
+            <li>Tu cupo es importante para otros clientes</li>
+        </ul>
+    </div>
+    <p>Entendemos que surgen imprevistos. Por favor contáctanos para reagendar tu próxima sesión.</p>
+    <p>Atentamente,<br/>Equipo CUTAI</p>
+</div>
+            </field>
+        </record>
+
+        <!-- Encuesta de Satisfacción -->
+        <record id="email_template_satisfaction_survey" model="mail.template">
+            <field name="name">CUTAI: Encuesta de Satisfacción</field>
+            <field name="model_id" ref="model_cutai_session"/>
+            <field name="subject">¿Cómo fue tu experiencia en CUTAI?</field>
+            <field name="email_from">${user.email or ''}</field>
+            <field name="email_to">${object.partner_id.email or ''}</field>
+            <field name="body_html" type="html">
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+    <h2 style="color: #2c3e50;">Gracias por visitarnos</h2>
+    <p>Hola <strong>${object.partner_id.name}</strong>,</p>
+    <p>Esperamos que hayas tenido una excelente experiencia en tu sesión del ${object.session_date.strftime('%d/%m/%Y')}.</p>
+    <p>Tu opinión es muy importante para nosotros. ¿Podrías tomarte un minuto para calificar tu experiencia?</p>
+    <div style="text-align: center; margin: 30px 0;">
+        <p><strong>¿Qué tan satisfecho/a estás con el servicio recibido?</strong></p>
+        <!-- Aquí se puede integrar con un módulo de encuestas -->
+    </div>
+    <p>Gracias por confiar en CUTAI,<br/>Equipo CUTAI</p>
+</div>
+            </field>
+        </record>
+
+        <!-- Recordatorio de Pago de Membresía -->
+        <record id="email_template_payment_reminder" model="mail.template">
+            <field name="name">CUTAI: Recordatorio de Pago de Membresía</field>
+            <field name="model_id" ref="model_cutai_membership"/>
+            <field name="subject">Recordatorio: Próximo pago de membresía - ${object.name}</field>
+            <field name="email_from">${user.email or ''}</field>
+            <field name="email_to">${object.partner_id.email or ''}</field>
+            <field name="body_html" type="html">
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+    <h2 style="color: #2c3e50;">Recordatorio de Pago</h2>
+    <p>Hola <strong>${object.partner_id.name}</strong>,</p>
+    <p>Te recordamos que el próximo pago de tu membresía vence el <strong>${object.next_charge_date.strftime('%d/%m/%Y')}</strong>.</p>
+    <div style="background-color: #f8f9fa; padding: 15px; border-left: 4px solid #3498db; margin: 20px 0;">
+        <p style="margin: 5px 0;"><strong>Membresía:</strong> ${object.name}</p>
+        <p style="margin: 5px 0;"><strong>Monto:</strong> $${object.payment_amount}</p>
+        <p style="margin: 5px 0;"><strong>Ciclo:</strong> ${object.cycle}/9</p>
+        <p style="margin: 5px 0;"><strong>Fecha de vencimiento:</strong> ${object.next_charge_date.strftime('%d/%m/%Y')}</p>
+    </div>
+    <p><strong>Importante:</strong> Los pagos con más de ${object.late_fee_days} días de retraso generan una mora de $${object.late_fee_amount}.</p>
+    <p>Para realizar tu pago, visita cualquiera de nuestras sucursales o contáctanos.</p>
+    <p>Gracias por ser parte de CUTAI,<br/>Equipo CUTAI</p>
+</div>
+            </field>
+        </record>
+
+        <!-- Cumpleaños -->
+        <record id="email_template_birthday" model="mail.template">
+            <field name="name">CUTAI: Felicitación de Cumpleaños</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="subject">Feliz Cumpleaños de parte de CUTAI</field>
+            <field name="email_from">${user.email or ''}</field>
+            <field name="email_to">${object.email or ''}</field>
+            <field name="body_html" type="html">
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; text-align: center;">
+    <h2 style="color: #e91e63;">Feliz Cumpleaños ${object.name}</h2>
+    <p style="font-size: 18px;">En CUTAI queremos celebrar contigo este día tan especial.</p>
+    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 10px; color: white; margin: 20px 0;">
+        <p style="font-size: 24px; margin: 0;">Tienes un 20% de descuento</p>
+        <p style="margin: 10px 0;">En cualquier tratamiento durante tu mes de cumpleaños</p>
+    </div>
+    <p>Aprovecha esta oferta especial y agenda tu cita.</p>
+    <p>Con cariño,<br/>Todo el equipo de CUTAI</p>
+</div>
+            </field>
+        </record>
+
+        <!-- Renovación de Membresía -->
+        <record id="email_template_membership_renewal" model="mail.template">
+            <field name="name">CUTAI: Renovación de Membresía</field>
+            <field name="model_id" ref="model_cutai_membership"/>
+            <field name="subject">Es momento de renovar tu membresía CUTAI</field>
+            <field name="email_from">${user.email or ''}</field>
+            <field name="email_to">${object.partner_id.email or ''}</field>
+            <field name="body_html" type="html">
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+    <h2 style="color: #2c3e50;">Renovación de Membresía</h2>
+    <p>Hola <strong>${object.partner_id.name}</strong>,</p>
+    <p>Tu membresía <strong>${object.name}</strong> está próxima a finalizar.</p>
+    <div style="background-color: #d4edda; padding: 15px; border-left: 4px solid #28a745; margin: 20px 0;">
+        <p style="margin: 5px 0;"><strong>Fecha de finalización:</strong> ${object.end_date.strftime('%d/%m/%Y') if object.end_date else 'N/A'}</p>
+        <p style="margin: 5px 0;"><strong>Sesiones completadas:</strong> ${len(object.partner_id.session_ids.filtered(lambda s: s.state == 'completed'))}</p>
+    </div>
+    <p>Continúa con tus resultados renovando hoy y obtén beneficios exclusivos:</p>
+    <ul>
+        <li>Descuento en la renovación</li>
+        <li>Sesiones de mantenimiento gratuitas</li>
+        <li>Prioridad en la agenda</li>
+    </ul>
+    <p>Contáctanos para conocer más sobre nuestros planes de renovación.</p>
+    <p>Gracias por confiar en CUTAI,<br/>Equipo CUTAI</p>
+</div>
+            </field>
+        </record>
+
+</odoo>

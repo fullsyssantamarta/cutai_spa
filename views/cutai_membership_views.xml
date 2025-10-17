@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Membresías -->
+    <record id="view_cutai_membership_tree" model="ir.ui.view">
+        <field name="name">cutai.membership.tree</field>
+        <field name="model">cutai.membership</field>
+        <field name="arch" type="xml">
+            <list string="Membresías" decoration-success="state=='active'" decoration-muted="state=='cancelled'">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="membership_type"/>
+                <field name="cycle"/>
+                <field name="next_charge_date"/>
+                <field name="payment_amount"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cutai_membership_form" model="ir.ui.view">
+        <field name="name">cutai.membership.form</field>
+        <field name="model">cutai.membership</field>
+        <field name="arch" type="xml">
+            <form string="Membresía">
+                <header>
+                    <button name="action_activate" string="Activar" type="object" invisible="state != 'draft'" class="oe_highlight"/>
+                    <button name="action_freeze" string="Congelar" type="object" invisible="state != 'active'"/>
+                    <button name="action_unfreeze" string="Descongelar" type="object" invisible="state != 'frozen'" class="oe_highlight"/>
+                    <button name="action_cancel" string="Cancelar" type="object" invisible="state not in ['active', 'frozen']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="membership_type"/>
+                            <field name="cycle"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                        <group>
+                            <field name="payment_amount"/>
+                            <field name="total_amount"/>
+                            <field name="next_charge_date"/>
+                            <field name="promotion_id"/>
+                            <field name="has_active_promotion"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Congelamiento" invisible="is_frozen == False">
+                            <field name="is_frozen"/>
+                            <field name="freeze_date"/>
+                            <field name="freeze_reason"/>
+                            <field name="unfreeze_date"/>
+                        </group>
+                        <group string="Moras">
+                            <field name="late_fee_amount"/>
+                            <field name="late_fee_days"/>
+                            <field name="accumulated_late_fees"/>
+                        </group>
+                    </group>
+                    <group string="Cancelación" invisible="state != 'cancelled'">
+                        <field name="requires_30_day_notice"/>
+                        <field name="cancellation_notice_date"/>
+                        <field name="cancellation_date"/>
+                        <field name="cancellation_reason"/>
+                    </group>
+                    <notebook>
+                        <page string="Pagos">
+                            <field name="payment_ids">
+                                <list editable="bottom" decoration-success="state=='paid'" decoration-danger="days_overdue &gt; 0">
+                                    <field name="payment_number"/>
+                                    <field name="due_date"/>
+                                    <field name="amount"/>
+                                    <field name="late_fee"/>
+                                    <field name="total_amount"/>
+                                    <field name="payment_date"/>
+                                    <field name="days_overdue"/>
+                                    <field name="state"/>
+                                    <button name="mark_as_paid" string="Marcar Pagado" type="object" icon="fa-check" invisible="state == 'paid'"/>
+                                </list>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="payments_count" string="Total de Pagos"/>
+                                <field name="paid_payments_count" string="Pagos Realizados"/>
+                            </group>
+                        </page>
+                        <page string="Notas">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cutai_membership" model="ir.actions.act_window">
+        <field name="name">Membresías</field>
+        <field name="res_model">cutai.membership</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Pagos de Membresía -->
+    <record id="view_cutai_membership_payment_tree" model="ir.ui.view">
+        <field name="name">cutai.membership.payment.tree</field>
+        <field name="model">cutai.membership.payment</field>
+        <field name="arch" type="xml">
+            <list string="Pagos" decoration-success="state=='paid'" decoration-danger="days_overdue &gt; 5">
+                <field name="membership_id"/>
+                <field name="partner_id"/>
+                <field name="payment_number"/>
+                <field name="due_date"/>
+                <field name="amount"/>
+                <field name="late_fee"/>
+                <field name="total_amount"/>
+                <field name="days_overdue"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cutai_membership_payment" model="ir.actions.act_window">
+        <field name="name">Pagos de Membresía</field>
+        <field name="res_model">cutai.membership.payment</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

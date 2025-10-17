@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Categorías de Servicios -->
+    <record id="view_cutai_service_category_tree" model="ir.ui.view">
+        <field name="name">cutai.service.category.tree</field>
+        <field name="model">cutai.service.category</field>
+        <field name="arch" type="xml">
+            <list string="Categorías">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="service_count"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cutai_service_category" model="ir.actions.act_window">
+        <field name="name">Categorías de Servicios</field>
+        <field name="res_model">cutai.service.category</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>
