@@ -255,6 +255,28 @@
         </field>
     </record>
 
+    <!-- Vista de Calendario personalizada para CUTAI -->
+    <record id="view_calendar_event_calendar_cutai" model="ir.ui.view">
+        <field name="name">calendar.event.calendar.cutai</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id" ref="calendar.view_calendar_event_calendar"/>
+        <field name="arch" type="xml">
+            <xpath expr="//calendar" position="attributes">
+                <attribute name="color">branch_id</attribute>
+                <attribute name="event_open_popup">true</attribute>
+                <attribute name="quick_create">false</attribute>
+            </xpath>
+            <xpath expr="//calendar" position="inside">
+                <field name="branch_id"/>
+                <field name="attendant_id"/>
+                <field name="main_service_id"/>
+                <field name="appointment_state"/>
+                <field name="client_first_name"/>
+                <field name="client_last_name"/>
+            </xpath>
+        </field>
+    </record>
+
     <!-- Acción para ver citas CUTAI -->
     <record id="action_calendar_event_cutai" model="ir.actions.act_window">
         <field name="name">Agenda CUTAI</field>
@@ -262,10 +284,10 @@
         <field name="view_mode">list,calendar,form</field>
         <field name="view_ids" eval="[(5, 0, 0),
             (0, 0, {'view_mode': 'list', 'view_id': ref('view_calendar_event_list_cutai')}),
-            (0, 0, {'view_mode': 'calendar'}),
+            (0, 0, {'view_mode': 'calendar', 'view_id': ref('view_calendar_event_calendar_cutai')}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('view_calendar_event_form_cutai')})]"/>
         <field name="context">{
-            'default_appointment_state': 'scheduled',
+            'default_appointment_state': 'reserved',
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -301,16 +323,16 @@
                 <filter name="waiting" string="En Espera" domain="[('appointment_state', '=', 'waiting')]"/>
                 <filter name="no_show" string="No Asisten" domain="[('appointment_state', '=', 'no_show')]"/>
                 <filter name="cancelled" string="Canceladas" domain="[('appointment_state', '=', 'cancelled')]"/>
-                <filter name="no_show" string="No Asistieron" domain="[('appointment_state', '=', 'no_show')]"/>
                 <separator/>
                 <filter name="pending_payment" string="Pago Pendiente" domain="[('payment_status', '=', 'pending')]"/>
                 <filter name="paid" string="Pagadas" domain="[('payment_status', '=', 'paid')]"/>
                 <separator/>
                 <group expand="0" string="Agrupar Por">
-                    <filter name="group_branch" string="Local" context="{'group_by': 'branch_id'}"/>
-                    <filter name="group_attendant" string="Prestador" context="{'group_by': 'attendant_id'}"/>
+                    <filter name="group_branch" string="Sucursal" context="{'group_by': 'branch_id'}"/>
+                    <filter name="group_attendant" string="Profesional" context="{'group_by': 'attendant_id'}"/>
                     <filter name="group_service" string="Servicio" context="{'group_by': 'main_service_id'}"/>
                     <filter name="group_state" string="Estado" context="{'group_by': 'appointment_state'}"/>
+                    <filter name="group_date" string="Fecha" context="{'group_by': 'start:day'}"/>
                     <filter name="group_origin" string="Origen" context="{'group_by': 'origin'}"/>
                     <filter name="group_payment" string="Estado Pago" context="{'group_by': 'payment_status'}"/>
                 </group>
