@@ -10,8 +10,18 @@
             <xpath expr="//notebook" position="inside">
                 <page string="Información CUTAI" invisible="is_cutai_client == False">
                     <group>
-                        <group string="Datos Clínicos">
+                        <group string="Datos Personales">
                             <field name="is_cutai_client"/>
+                            <field name="instagram_account" placeholder="usuario_instagram"/>
+                        </group>
+                        <group string="Estadísticas de Citas">
+                            <field name="total_appointments" readonly="1"/>
+                            <field name="completed_appointments" readonly="1"/>
+                            <field name="cancelled_appointments" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Datos Clínicos">
                             <field name="phototype"/>
                             <field name="active_zones" widget="many2many_tags"/>
                             <field name="uses_contraceptives"/>
@@ -25,7 +35,7 @@
                         </group>
                     </group>
                     <group>
-                        <group string="Estadísticas">
+                        <group string="Estadísticas de Tratamiento">
                             <field name="total_sessions_count"/>
                             <field name="last_appointment_date"/>
                             <field name="next_appointment_date"/>

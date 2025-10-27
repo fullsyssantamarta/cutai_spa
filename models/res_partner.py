@@ -104,6 +104,29 @@ class Partner(models.Model):
         help='Marca este cliente como cliente de CUTAI'
     )
     
+    instagram_account = fields.Char(
+        string='Cuenta de Instagram',
+        help='Usuario de Instagram del cliente (sin @)'
+    )
+    
+    total_appointments = fields.Integer(
+        string='Total de Reservas',
+        compute='_compute_appointments_count',
+        store=True
+    )
+    
+    cancelled_appointments = fields.Integer(
+        string='Reservas Canceladas',
+        compute='_compute_appointments_count',
+        store=True
+    )
+    
+    completed_appointments = fields.Integer(
+        string='Reservas Completadas',
+        compute='_compute_appointments_count',
+        store=True
+    )
+    
     @api.depends('consent_date')
     def _compute_consent_valid(self):
         for partner in self:
@@ -122,6 +145,25 @@ class Partner(models.Model):
                 lambda m: m.state == 'active'
             )
             partner.active_membership_id = active_membership[:1] if active_membership else False
+    
+    def _compute_appointments_count(self):
+        """Calcular estadísticas de citas"""
+        for partner in self:
+            try:
+                appointments = self.env['calendar.event'].search([
+                    ('partner_ids', 'in', [partner.id])
+                ])
+                partner.total_appointments = len(appointments)
+                partner.cancelled_appointments = len(appointments.filtered(
+                    lambda a: a.appointment_state == 'cancelled'
+                ))
+                partner.completed_appointments = len(appointments.filtered(
+                    lambda a: a.appointment_state == 'attended'
+                ))
+            except Exception:
+                partner.total_appointments = 0
+                partner.cancelled_appointments = 0
+                partner.completed_appointments = 0
     
     @api.depends('session_ids')
     def _compute_sessions_count(self):

@@ -142,13 +142,14 @@ class CalendarEvent(models.Model):
     
     # ==================== ESTADO Y PAGOS ====================
     appointment_state = fields.Selection([
-        ('scheduled', 'Programada'),
-        ('confirmed', 'Confirmada'),
-        ('in_progress', 'En Progreso'),
-        ('done', 'Completada'),
-        ('no_show', 'No Asistió'),
-        ('cancelled', 'Cancelada'),
-    ], string='Estado', default='scheduled', tracking=True)
+        ('reserved', 'Reservado'),
+        ('confirmed', 'Confirmado'),
+        ('attended', 'Asiste'),
+        ('pending', 'Pendiente'),
+        ('no_show', 'No Asiste'),
+        ('waiting', 'En Espera'),
+        ('cancelled', 'Cancelado'),
+    ], string='Estado', default='reserved', tracking=True)
     
     payment_status = fields.Selection([
         ('pending', 'Pendiente'),
@@ -177,6 +178,32 @@ class CalendarEvent(models.Model):
     
     client_preference = fields.Text(
         string='Preferencia Cliente'
+    )
+    
+    # ==================== PARAMETROS DE TRATAMIENTO ====================
+    laser_type = fields.Selection([
+        ('ndyag', 'Nd/Yag'),
+        ('alexandrita', 'Alexandrita'),
+    ], string='Tipo de Láser')
+    
+    spot_size = fields.Selection([
+        ('12', '12'),
+        ('15', '15'),
+        ('18', '18'),
+    ], string='Spot')
+    
+    hair_type_last_session = fields.Selection([
+        ('fine', 'Fino'),
+        ('thick', 'Grueso'),
+        ('intermediate', 'Intermedio'),
+    ], string='Tipo de vello última sesión')
+    
+    shot_width = fields.Char(
+        string='Ancho de disparo'
+    )
+    
+    treatment_note = fields.Text(
+        string='Nota interna específica'
     )
     
     # ==================== ORIGEN ====================
@@ -406,21 +433,21 @@ class CalendarEvent(models.Model):
         self.write({'appointment_state': 'confirmed'})
         return True
     
-    def action_start_appointment(self):
-        """Iniciar cita"""
-        self.write({'appointment_state': 'in_progress'})
-        return True
-    
-    def action_complete_appointment(self):
-        """Completar cita"""
+    def action_mark_attended(self):
+        """Marcar como asiste"""
         self.write({
-            'appointment_state': 'done',
+            'appointment_state': 'attended',
             'realization_date': fields.Datetime.now()
         })
         return True
     
+    def action_mark_waiting(self):
+        """Marcar como en espera"""
+        self.write({'appointment_state': 'waiting'})
+        return True
+    
     def action_mark_no_show(self):
-        """Marcar como no asistió"""
+        """Marcar como no asiste"""
         self.write({'appointment_state': 'no_show'})
         return True
     

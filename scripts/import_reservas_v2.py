@@ -1,0 +1,223 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Script FINAL SIMPLIFICADO para importar reservas
+"""
+
+import pandas as pd
+import xmlrpc.client
+from datetime import datetime, timedelta
+import sys
+
+ODOO_URL = 'http://localhost:10018'
+ODOO_DB = 'cutai'
+ODOO_USERNAME = 'admin@gmail.com'
+ODOO_PASSWORD = 'Admin123'
+EXCEL_FILE = '/root/reservas_28107_1760725844.xlsx'
+
+def connect_odoo():
+    common = xmlrpc.client.ServerProxy(f'{ODOO_URL}/xmlrpc/2/common')
+    uid = common.authenticate(ODOO_DB, ODOO_USERNAME, ODOO_PASSWORD, {})
+    if not uid:
+        print("Error: No se pudo autenticar")
+        sys.exit(1)
+    models = xmlrpc.client.ServerProxy(f'{ODOO_URL}/xmlrpc/2/object')
+    return uid, models
+
+def parse_datetime(date_str):
+    if pd.isna(date_str):
+        return False
+    try:
+        date_str = str(date_str).strip()
+        dt = datetime.strptime(date_str, '%d/%m/%Y %H:%M')
+        return dt.strftime('%Y-%m-%d %H:%M:%S')
+    except:
+        return False
+
+def find_partner(models, uid, password, email, customer_number):
+    partner_id = False
+    
+    if email and '@' in email:
+        partner_ids = models.execute_kw(ODOO_DB, uid, password,
+            'res.partner', 'search',
+            [[['email', '=', email.lower()]]], {'limit': 1}
+        )
+        if partner_ids:
+            partner_id = partner_ids[0]
+    
+    if not partner_id and customer_number:
+        partner_ids = models.execute_kw(ODOO_DB, uid, password,
+            'res.partner', 'search',
+            [[['ref', '=', customer_number]]], {'limit': 1}
+        )
+        if partner_ids:
+            partner_id = partner_ids[0]
+    
+    return partner_id
+
+def map_estado(estado):
+    """Mapea el estado del Excel al estado de Odoo"""
+    if not estado:
+        return 'scheduled'
+    
+    estado_lower = str(estado).strip().lower()
+    
+    # Mapeo de estados
+    # 'scheduled', 'confirmed', 'in_progress', 'done', 'no_show', 'cancelled'
+    if estado_lower in ['asiste', 'completado']:
+        return 'done'
+    elif estado_lower == 'no asiste':
+        return 'no_show'
+    elif estado_lower in ['confirmado', 'confirmada']:
+        return 'confirmed'
+    elif estado_lower == 'pendiente':
+        return 'scheduled'
+    elif estado_lower in ['cancelado', 'cancelada']:
+        return 'cancelled'
+    
+    return 'scheduled'  # Estado por defecto
+
+def map_payment_status(estado_pago):
+    """Mapea el estado de pago del Excel al estado de Odoo"""
+    if not estado_pago:
+        return 'pending'
+    
+    estado_lower = str(estado_pago).strip().lower()
+    
+    # 'pending', 'partial', 'paid', 'refunded'
+    if estado_lower in ['pago asociado', 'pagado', 'pagada']:
+        return 'paid'
+    elif estado_lower in ['no pagada', 'no pagado']:
+        return 'pending'
+    
+    return 'pending'
+
+def main():
+    print("=" * 80)
+    print("IMPORTACIÓN DE 1173 RESERVAS")
+    print("=" * 80)
+    
+    uid, models = connect_odoo()
+    print(f"\nConectado. UID: {uid}")
+    
+    df = pd.read_excel(EXCEL_FILE)
+    print(f"Total de reservas: {len(df)}\n")
+    
+    created = 0
+    skipped = 0
+    errors = 0
+    
+    print("Procesando reservas...")
+    print("=" * 80)
+    
+    for index, row in df.iterrows():
+        if (index + 1) % 100 == 0:
+            print(f"[{index+1}/{len(df)}] Creadas: {created}, Omitidas: {skipped}, Errores: {errors}")
+        
+        try:
+            # Fecha de la cita
+            start_datetime = parse_datetime(row.get('Fecha de realización'))
+            if not start_datetime:
+                skipped += 1
+                continue
+            
+            start_dt = datetime.strptime(start_datetime, '%Y-%m-%d %H:%M:%S')
+            stop_datetime = (start_dt + timedelta(hours=1)).strftime('%Y-%m-%d %H:%M:%S')
+            
+            # Buscar cliente
+            email = str(row.get('E-mail', '')).strip().lower() if pd.notna(row.get('E-mail')) else ''
+            customer_number = str(int(row.get('N° de Cliente'))) if pd.notna(row.get('N° de Cliente')) else ''
+            
+            partner_id = find_partner(models, uid, ODOO_PASSWORD, email, customer_number)
+            if not partner_id:
+                skipped += 1
+                continue
+            
+            # Datos básicos
+            first_name = str(row.get('Nombre', '')).strip() if pd.notna(row.get('Nombre')) else ''
+            last_name = str(row.get('Apellido', '')).strip() if pd.notna(row.get('Apellido')) else ''
+            full_name = f"{first_name} {last_name}".strip()
+            servicio = str(row.get('Servicio', 'Servicio')).strip() if pd.notna(row.get('Servicio')) else 'Servicio'
+            
+            event_vals = {
+                'name': f"{servicio} - {full_name}",
+                'start': start_datetime,
+                'stop': stop_datetime,
+                'partner_id': partner_id,
+                'partner_ids': [(6, 0, [partner_id])],
+                'allday': False,
+            }
+            
+            # Estado
+            estado = str(row.get('Estado', '')).strip() if pd.notna(row.get('Estado')) else ''
+            if estado:
+                event_vals['appointment_state'] = map_estado(estado)
+            
+            # Precios
+            try:
+                precio_lista = row.get('Precio lista')
+                if pd.notna(precio_lista) and float(precio_lista) > 0:
+                    event_vals['list_price'] = float(precio_lista)
+                
+                precio_real = row.get('Precio real')
+                if pd.notna(precio_real) and float(precio_real) > 0:
+                    event_vals['real_price'] = float(precio_real)
+            except:
+                pass
+            
+            # Sesiones
+            try:
+                num_sesion = row.get('Nº de sesión')
+                if pd.notna(num_sesion):
+                    event_vals['session_number'] = int(num_sesion)
+                
+                sesiones_totales = row.get('Sesiones Totales')
+                if pd.notna(sesiones_totales):
+                    event_vals['total_sessions'] = int(sesiones_totales)
+            except:
+                pass
+            
+            # Estado de pago
+            estado_pago = str(row.get('Estado de pago', '')).strip() if pd.notna(row.get('Estado de pago')) else ''
+            if estado_pago:
+                if 'pago' in estado_pago.lower() or 'pagado' in estado_pago.lower():
+                    event_vals['payment_status'] = 'paid'
+                else:
+                    event_vals['payment_status'] = 'pending'
+            
+            # Comentarios
+            comentario = str(row.get('Comentario interno', '')).strip() if pd.notna(row.get('Comentario interno')) else ''
+            if comentario and comentario not in ['Sin Preferencia', 'Manual']:
+                event_vals['description'] = comentario[:2000]
+            
+            # Crear cita
+            event_id = models.execute_kw(
+                ODOO_DB, uid, ODOO_PASSWORD,
+                'calendar.event', 'create',
+                [event_vals]
+            )
+            created += 1
+            
+        except Exception as e:
+            errors += 1
+            if errors <= 5:
+                error_str = str(e)
+                # Extraer solo el mensaje relevante
+                if 'ValueError' in error_str:
+                    msg = error_str.split('ValueError:')[-1].split('\\n')[0]
+                    print(f"  Error fila {index+1}: {msg[:100]}")
+                elif 'KeyError' in error_str:
+                    msg = error_str.split('KeyError:')[-1].split('\\n')[0]
+                    print(f"  Error fila {index+1}: {msg[:100]}")
+                else:
+                    print(f"  Error fila {index+1}: {error_str[:100]}")
+    
+    print("\n" + "=" * 80)
+    print("RESUMEN:")
+    print(f"  Citas creadas: {created}")
+    print(f"  Omitidas: {skipped}")
+    print(f"  Errores: {errors}")
+    print("=" * 80)
+
+if __name__ == '__main__':
+    main()

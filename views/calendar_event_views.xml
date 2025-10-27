@@ -8,10 +8,12 @@
         <field name="inherit_id" ref="calendar.view_calendar_event_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//list" position="attributes">
-                <attribute name="decoration-success">appointment_state == 'done'</attribute>
+                <attribute name="decoration-info">appointment_state == 'reserved'</attribute>
                 <attribute name="decoration-warning">appointment_state == 'confirmed'</attribute>
-                <attribute name="decoration-danger">appointment_state == 'no_show'</attribute>
-                <attribute name="decoration-muted">appointment_state == 'cancelled'</attribute>
+                <attribute name="decoration-primary">appointment_state == 'attended'</attribute>
+                <attribute name="decoration-danger">appointment_state == 'pending'</attribute>
+                <attribute name="decoration-muted">appointment_state == 'no_show'</attribute>
+                <attribute name="decoration-success">appointment_state == 'waiting'</attribute>
             </xpath>
             <xpath expr="//field[@name='start']" position="after">
                 <field name="realization_date" optional="show"/>
@@ -53,27 +55,26 @@
                     <button name="action_confirm_appointment" 
                             string="Confirmar" 
                             type="object" 
-                            invisible="appointment_state != 'scheduled'" 
+                            invisible="appointment_state not in ['reserved', 'pending']" 
                             class="oe_highlight"/>
-                    <button name="action_start_appointment" 
-                            string="Iniciar" 
+                    <button name="action_mark_attended" 
+                            string="Asiste" 
                             type="object" 
-                            invisible="appointment_state not in ['scheduled', 'confirmed']" 
+                            invisible="appointment_state not in ['confirmed', 'waiting']" 
                             class="oe_highlight"/>
-                    <button name="action_complete_appointment" 
-                            string="Completar" 
+                    <button name="action_mark_waiting" 
+                            string="En Espera" 
                             type="object" 
-                            invisible="appointment_state != 'in_progress'" 
-                            class="oe_highlight"/>
+                            invisible="appointment_state not in ['reserved', 'confirmed']"/>
                     <button name="action_mark_no_show" 
-                            string="No Asistió" 
+                            string="No Asiste" 
                             type="object" 
-                            invisible="appointment_state not in ['scheduled', 'confirmed']"/>
+                            invisible="appointment_state not in ['reserved', 'confirmed', 'waiting']"/>
                     <button name="action_cancel_appointment" 
                             string="Cancelar" 
                             type="object" 
-                            invisible="appointment_state in ['done', 'cancelled']"/>
-                    <field name="appointment_state" widget="statusbar" statusbar_visible="scheduled,confirmed,in_progress,done"/>
+                            invisible="appointment_state in ['attended', 'cancelled']"/>
+                    <field name="appointment_state" widget="statusbar" statusbar_visible="reserved,confirmed,attended"/>
                 </header>
             </xpath>
 
@@ -147,6 +148,20 @@
                                    decoration-info="payment_status == 'partial'"/>
                             <field name="payment_date"/>
                             <field name="payment_id"/>
+                        </group>
+                    </group>
+                </page>
+                
+                <page string="Parámetros de Tratamiento" name="page_treatment_params">
+                    <group>
+                        <group string="Parámetros del Láser">
+                            <field name="laser_type"/>
+                            <field name="spot_size"/>
+                            <field name="hair_type_last_session"/>
+                            <field name="shot_width"/>
+                        </group>
+                        <group string="Notas del Tratamiento">
+                            <field name="treatment_note" nolabel="1" placeholder="Observaciones específicas de esta sesión..."/>
                         </group>
                     </group>
                 </page>
@@ -279,10 +294,13 @@
                 <filter name="today" string="Hoy" domain="[('start', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')), ('start', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:59:59'))]"/>
                 <filter name="this_week" string="Esta Semana" domain="[('start', '&gt;=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d')), ('start', '&lt;=', (context_today() + datetime.timedelta(days=6-context_today().weekday())).strftime('%Y-%m-%d'))]"/>
                 <separator/>
-                <filter name="scheduled" string="Programadas" domain="[('appointment_state', '=', 'scheduled')]"/>
+                <filter name="reserved" string="Reservadas" domain="[('appointment_state', '=', 'reserved')]"/>
                 <filter name="confirmed" string="Confirmadas" domain="[('appointment_state', '=', 'confirmed')]"/>
-                <filter name="in_progress" string="En Progreso" domain="[('appointment_state', '=', 'in_progress')]"/>
-                <filter name="done" string="Completadas" domain="[('appointment_state', '=', 'done')]"/>
+                <filter name="attended" string="Asisten" domain="[('appointment_state', '=', 'attended')]"/>
+                <filter name="pending" string="Pendientes" domain="[('appointment_state', '=', 'pending')]"/>
+                <filter name="waiting" string="En Espera" domain="[('appointment_state', '=', 'waiting')]"/>
+                <filter name="no_show" string="No Asisten" domain="[('appointment_state', '=', 'no_show')]"/>
+                <filter name="cancelled" string="Canceladas" domain="[('appointment_state', '=', 'cancelled')]"/>
                 <filter name="no_show" string="No Asistieron" domain="[('appointment_state', '=', 'no_show')]"/>
                 <separator/>
                 <filter name="pending_payment" string="Pago Pendiente" domain="[('payment_status', '=', 'pending')]"/>
