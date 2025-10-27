@@ -277,14 +277,35 @@
         </field>
     </record>
 
+    <!-- Vista Gantt/Timeline para CUTAI -->
+    <record id="view_calendar_event_gantt_cutai" model="ir.ui.view">
+        <field name="name">calendar.event.gantt.cutai</field>
+        <field name="model">calendar.event</field>
+        <field name="arch" type="xml">
+            <gantt string="Timeline de Citas"
+                   date_start="start"
+                   date_stop="stop"
+                   default_group_by="attendant_id"
+                   color="appointment_state">
+                <field name="branch_id"/>
+                <field name="attendant_id"/>
+                <field name="main_service_id"/>
+                <field name="appointment_state"/>
+                <field name="client_first_name"/>
+                <field name="client_last_name"/>
+            </gantt>
+        </field>
+    </record>
+
     <!-- Acción para ver citas CUTAI -->
     <record id="action_calendar_event_cutai" model="ir.actions.act_window">
         <field name="name">Agenda CUTAI</field>
         <field name="res_model">calendar.event</field>
-        <field name="view_mode">list,calendar,form</field>
+        <field name="view_mode">list,calendar,gantt,form</field>
         <field name="view_ids" eval="[(5, 0, 0),
             (0, 0, {'view_mode': 'list', 'view_id': ref('view_calendar_event_list_cutai')}),
             (0, 0, {'view_mode': 'calendar', 'view_id': ref('view_calendar_event_calendar_cutai')}),
+            (0, 0, {'view_mode': 'gantt', 'view_id': ref('view_calendar_event_gantt_cutai')}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('view_calendar_event_form_cutai')})]"/>
         <field name="context">{
             'default_appointment_state': 'reserved',
