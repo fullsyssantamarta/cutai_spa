@@ -7,11 +7,15 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
+            <!-- Agregar checkbox de Cliente CUTAI visible en la parte superior -->
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="is_cutai_client" widget="boolean_toggle"/>
+            </xpath>
+            
             <xpath expr="//notebook" position="inside">
                 <page string="Información CUTAI" invisible="is_cutai_client == False">
                     <group>
                         <group string="Datos Personales">
-                            <field name="is_cutai_client"/>
                             <field name="birthdate"/>
                             <field name="age" readonly="1"/>
                             <field name="instagram_account" placeholder="usuario_instagram"/>
