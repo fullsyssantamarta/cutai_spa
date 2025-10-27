@@ -12,6 +12,8 @@
                     <group>
                         <group string="Datos Personales">
                             <field name="is_cutai_client"/>
+                            <field name="birthdate"/>
+                            <field name="age" readonly="1"/>
                             <field name="instagram_account" placeholder="usuario_instagram"/>
                         </group>
                         <group string="Estadísticas de Citas">
@@ -21,12 +23,22 @@
                         </group>
                     </group>
                     <group>
+                        <group string="Promoción Activa">
+                            <field name="has_promotion"/>
+                            <field name="promotion_name" invisible="has_promotion == False" placeholder="Nombre de la promoción..."/>
+                            <field name="promotion_expiry" invisible="has_promotion == False"/>
+                        </group>
+                        <group string="Membresía Activa">
+                            <field name="active_membership_id"/>
+                        </group>
+                    </group>
+                    <group>
                         <group string="Datos Clínicos">
                             <field name="phototype"/>
                             <field name="active_zones" widget="many2many_tags"/>
                             <field name="uses_contraceptives"/>
                             <field name="has_pcos"/>
-                            <field name="allergy_info"/>
+                            <field name="allergy_info" placeholder="Alergias o condiciones médicas relevantes..."/>
                         </group>
                         <group string="Consentimiento">
                             <field name="consent_valid"/>
@@ -40,9 +52,7 @@
                             <field name="last_appointment_date"/>
                             <field name="next_appointment_date"/>
                         </group>
-                        <group string="Membresía Activa">
-                            <field name="active_membership_id"/>
-                        </group>
+                        <group></group>
                     </group>
                 </page>
             </xpath>

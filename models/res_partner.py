@@ -109,6 +109,18 @@ class Partner(models.Model):
         help='Usuario de Instagram del cliente (sin @)'
     )
     
+    birthdate = fields.Date(
+        string='Fecha de Nacimiento',
+        help='Fecha de nacimiento del cliente'
+    )
+    
+    age = fields.Integer(
+        string='Edad',
+        compute='_compute_age',
+        store=False,
+        help='Edad calculada a partir de la fecha de nacimiento'
+    )
+    
     total_appointments = fields.Integer(
         string='Total de Reservas',
         compute='_compute_appointments_count',
@@ -125,6 +137,23 @@ class Partner(models.Model):
         string='Reservas Completadas',
         compute='_compute_appointments_count',
         store=True
+    )
+    
+    # ==================== PROMOCIONES ====================
+    has_promotion = fields.Boolean(
+        string='Tiene Promoción',
+        default=False,
+        help='Indica si el cliente tiene una promoción activa'
+    )
+    
+    promotion_name = fields.Char(
+        string='Nombre de Promoción',
+        help='Descripción de la promoción activa'
+    )
+    
+    promotion_expiry = fields.Date(
+        string='Vencimiento Promoción',
+        help='Fecha de vencimiento de la promoción'
     )
     
     @api.depends('consent_date')
@@ -164,6 +193,19 @@ class Partner(models.Model):
                 partner.total_appointments = 0
                 partner.cancelled_appointments = 0
                 partner.completed_appointments = 0
+    
+    @api.depends('birthdate')
+    def _compute_age(self):
+        """Calcular edad del cliente a partir de la fecha de nacimiento"""
+        from datetime import date
+        for partner in self:
+            if partner.birthdate:
+                today = date.today()
+                partner.age = today.year - partner.birthdate.year - (
+                    (today.month, today.day) < (partner.birthdate.month, partner.birthdate.day)
+                )
+            else:
+                partner.age = 0
     
     @api.depends('session_ids')
     def _compute_sessions_count(self):
