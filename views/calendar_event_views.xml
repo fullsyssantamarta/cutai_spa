@@ -49,6 +49,18 @@
         <field name="model">calendar.event</field>
         <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
         <field name="arch" type="xml">
+            <!-- Agregar botón inteligente para abrir perfil del cliente -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_open_client_profile" type="object"
+                        class="oe_stat_button" icon="fa-user"
+                        invisible="not main_partner_id">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Ver Perfil</span>
+                        <span class="o_stat_text">Cliente</span>
+                    </div>
+                </button>
+            </xpath>
+            
             <!-- Agregar header con botones de estado al principio del form -->
             <xpath expr="//form/sheet" position="before">
                 <header>

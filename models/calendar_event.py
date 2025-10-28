@@ -455,3 +455,19 @@ class CalendarEvent(models.Model):
         """Cancelar cita"""
         self.write({'appointment_state': 'cancelled'})
         return True
+    
+    def action_open_client_profile(self):
+        """Abrir el perfil del cliente principal"""
+        self.ensure_one()
+        if not self.main_partner_id:
+            return False
+        
+        return {
+            'name': f'Cliente: {self.main_partner_id.name}',
+            'type': 'ir.actions.act_window',
+            'res_model': 'res.partner',
+            'res_id': self.main_partner_id.id,
+            'view_mode': 'form',
+            'view_type': 'form',
+            'target': 'current',
+        }
