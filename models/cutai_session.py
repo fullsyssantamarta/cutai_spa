@@ -42,6 +42,19 @@ class CutaiSession(models.Model):
         help='Número de la sesión dentro del tratamiento'
     )
     
+    session_number_by_zone = fields.Integer(
+        string='Sesión # por Zona',
+        compute='_compute_session_number_by_zone',
+        store=True,
+        help='Número de sesión para esta zona específica (todas las sesiones del cliente en esta zona)'
+    )
+    
+    total_sessions_zone = fields.Integer(
+        string='Total Sesiones en Zona',
+        compute='_compute_total_sessions_zone',
+        help='Total de sesiones completadas para esta zona'
+    )
+    
     session_date = fields.Date(
         string='Fecha de Sesión',
         default=fields.Date.today
@@ -207,6 +220,40 @@ class CutaiSession(models.Model):
                 session.duration_minutes = delta.total_seconds() / 60
             else:
                 session.duration_minutes = 0.0
+    
+    @api.depends('partner_id', 'zone_id', 'session_date', 'state')
+    def _compute_session_number_by_zone(self):
+        """Calcular número de sesión para esta zona específica"""
+        for session in self:
+            if session.partner_id and session.zone_id:
+                # Contar sesiones anteriores completadas en esta zona
+                previous_sessions = self.search_count([
+                    ('partner_id', '=', session.partner_id.id),
+                    ('zone_id', '=', session.zone_id.id),
+                    ('session_date', '<', session.session_date or fields.Date.today()),
+                    ('state', '=', 'completed'),
+                    ('id', '!=', session.id)
+                ])
+                # Si esta sesión está completada, sumar 1
+                if session.state == 'completed':
+                    session.session_number_by_zone = previous_sessions + 1
+                else:
+                    session.session_number_by_zone = previous_sessions + 1
+            else:
+                session.session_number_by_zone = 1
+    
+    @api.depends('partner_id', 'zone_id')
+    def _compute_total_sessions_zone(self):
+        """Calcular total de sesiones completadas en esta zona"""
+        for session in self:
+            if session.partner_id and session.zone_id:
+                session.total_sessions_zone = self.search_count([
+                    ('partner_id', '=', session.partner_id.id),
+                    ('zone_id', '=', session.zone_id.id),
+                    ('state', '=', 'completed')
+                ])
+            else:
+                session.total_sessions_zone = 0
     
     @api.onchange('treatment_id')
     def _onchange_treatment_id(self):

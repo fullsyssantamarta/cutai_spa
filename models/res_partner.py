@@ -202,10 +202,63 @@ class Partner(models.Model):
             if partner.birthdate:
                 today = date.today()
                 partner.age = today.year - partner.birthdate.year - (
-                    (today.month, today.day) < (partner.birthdate.month, partner.birthdate.day)
+                                        (today.month, today.day) < (partner.birthdate.month, partner.birthdate.day)
                 )
             else:
                 partner.age = 0
+    
+    def get_sessions_by_zone(self):
+        """Obtener historial de sesiones agrupadas por zona"""
+        self.ensure_one()
+        
+        sessions_by_zone = {}
+        sessions = self.env['cutai.session'].search([
+            ('partner_id', '=', self.id),
+            ('state', '=', 'completed')
+        ], order='zone_id, session_date')
+        
+        for session in sessions:
+            zone_name = session.zone_id.name if session.zone_id else 'Sin zona'
+            if zone_name not in sessions_by_zone:
+                sessions_by_zone[zone_name] = []
+            
+            sessions_by_zone[zone_name].append({
+                'session_number': session.session_number_by_zone,
+                'date': session.session_date,
+                'branch': session.branch_id.name,
+                'attendant': session.attendant_id.name,
+                'fluence': session.fluence,
+                'spot_size': session.spot_size,
+                'notes': session.post_treatment_notes,
+                'reduction': session.hair_reduction_percentage,
+            })
+        
+        return sessions_by_zone
+    
+    def action_view_session_history(self):
+        """Abrir vista de historial de sesiones por zona"""
+        self.ensure_one()
+        return {
+            'name': f'Historial de Sesiones - {self.name}',
+            'type': 'ir.actions.act_window',
+            'res_model': 'cutai.session',
+            'view_mode': 'tree,form',
+            'domain': [('partner_id', '=', self.id), ('state', '=', 'completed')],
+            'context': {
+                'default_partner_id': self.id,
+                'group_by': 'zone_id',
+            }
+        }
+    
+    @api.constrains('phototype', 'active_zones')
+    def _check_treatment_suitability(self):
+        """Validar que el fototipo sea compatible con tratamiento láser"""
+        for partner in self:
+            if partner.phototype == '6' and partner.active_zones:
+                raise ValidationError(
+                    _('Advertencia: Los fototipos VI requieren evaluación médica especializada '
+                      'antes de iniciar tratamientos láser. Por favor consulte con el médico responsable.')
+                )
     
     @api.depends('session_ids')
     def _compute_sessions_count(self):
