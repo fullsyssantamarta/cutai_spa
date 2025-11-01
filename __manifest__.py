@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'CUTAI Laser Spa Management',
-    'version': '18.0.1.0.8',
+    'version': '18.0.1.0.9',
     'category': 'Services',
     'summary': 'Sistema completo de gestión para SPA y clínica de depilación láser',
     'description': """
@@ -112,6 +112,7 @@
     },
     'demo': [
         'demo/cutai_demo.xml',
+        'data/demo_branches.xml',
     ],
     'images': ['static/description/icon.png'],
     'installable': True,

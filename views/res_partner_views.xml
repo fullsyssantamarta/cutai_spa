@@ -64,6 +64,8 @@
                             <field name="phototype"/>
                             <field name="active_zones" widget="many2many_tags"/>
                             <field name="uses_contraceptives"/>
+                            <field name="contraceptives_notes" invisible="uses_contraceptives == False" 
+                                   placeholder="Especifique tipo de anticonceptivos u hormonas..."/>
                             <field name="has_pcos"/>
                             <field name="allergy_info" placeholder="Alergias o condiciones médicas relevantes..."/>
                         </group>

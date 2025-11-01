@@ -381,7 +381,38 @@
     </record>
 
     <!-- Acciones de agenda filtradas por sucursal -->
-    <!-- Nota: Las sucursales deben crearse con IDs específicos o usar external IDs -->
+    <record id="action_calendar_event_branch_principal" model="ir.actions.act_window">
+        <field name="name">Sucursal Principal</field>
+        <field name="res_model">calendar.event</field>
+        <field name="view_mode">calendar,gantt,list,form</field>
+        <field name="domain">[('branch_id.code', '=', 'PRIN')]</field>
+        <field name="context">{
+            'default_branch_id': ref('branch_principal'),
+            'search_default_today': 1,
+        }</field>
+    </record>
+
+    <record id="action_calendar_event_branch_norte" model="ir.actions.act_window">
+        <field name="name">Sucursal Norte</field>
+        <field name="res_model">calendar.event</field>
+        <field name="view_mode">calendar,gantt,list,form</field>
+        <field name="domain">[('branch_id.code', '=', 'NORTE')]</field>
+        <field name="context">{
+            'default_branch_id': ref('branch_norte'),
+            'search_default_today': 1,
+        }</field>
+    </record>
+
+    <record id="action_calendar_event_branch_sur" model="ir.actions.act_window">
+        <field name="name">Sucursal Sur</field>
+        <field name="res_model">calendar.event</field>
+        <field name="view_mode">calendar,gantt,list,form</field>
+        <field name="domain">[('branch_id.code', '=', 'SUR')]</field>
+        <field name="context">{
+            'default_branch_id': ref('branch_sur'),
+            'search_default_today': 1,
+        }</field>
+    </record>
     
 </odoo>
 

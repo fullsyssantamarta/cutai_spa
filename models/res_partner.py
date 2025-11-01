@@ -29,6 +29,11 @@ class Partner(models.Model):
         help='Indica si la clienta usa anticonceptivos u hormonas'
     )
     
+    contraceptives_notes = fields.Text(
+        string='Notas sobre Anticonceptivos',
+        help='Detalles sobre el tipo de anticonceptivos u hormonas que usa'
+    )
+    
     has_pcos = fields.Boolean(
         string='SOP (Síndrome de Ovario Poliquístico)',
         help='Marca si la clienta tiene diagnóstico de SOP'

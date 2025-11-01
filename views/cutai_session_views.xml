@@ -75,6 +75,7 @@
                                     <field name="machine_id"/>
                                     <field name="fluence"/>
                                     <field name="spot_size"/>
+                                    <field name="shot_width"/>
                                     <field name="pulse_duration"/>
                                     <field name="pulses_count"/>
                                 </group>
@@ -274,6 +275,7 @@
                 <field name="attendant_id" string="Profesional"/>
                 <field name="fluence" string="Fluencia"/>
                 <field name="spot_size" string="Spot"/>
+                <field name="shot_width" string="Ancho Disparo" optional="show"/>
                 <field name="hair_reduction_percentage" string="% Reducción"/>
                 <field name="post_treatment_notes" string="Notas"/>
                 <field name="state" invisible="1"/>

@@ -66,6 +66,24 @@
               parent="menu_cutai_calendar"
               action="action_calendar_event_cutai"
               sequence="10"/>
+    
+    <menuitem id="menu_cutai_calendar_principal"
+              name="📍 Sucursal Principal"
+              parent="menu_cutai_calendar"
+              action="action_calendar_event_branch_principal"
+              sequence="20"/>
+    
+    <menuitem id="menu_cutai_calendar_norte"
+              name="📍 Sucursal Norte"
+              parent="menu_cutai_calendar"
+              action="action_calendar_event_branch_norte"
+              sequence="30"/>
+    
+    <menuitem id="menu_cutai_calendar_sur"
+              name="📍 Sucursal Sur"
+              parent="menu_cutai_calendar"
+              action="action_calendar_event_branch_sur"
+              sequence="40"/>
 
     <!-- Servicios SPA -->
     <menuitem id="menu_cutai_services"

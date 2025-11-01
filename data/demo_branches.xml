@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Sucursales de demostración -->
+        <record id="branch_principal" model="cutai.branch">
+            <field name="name">Sucursal Principal</field>
+            <field name="code">PRIN</field>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="branch_norte" model="cutai.branch">
+            <field name="name">Sucursal Norte</field>
+            <field name="code">NORTE</field>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="branch_sur" model="cutai.branch">
+            <field name="name">Sucursal Sur</field>
+            <field name="code">SUR</field>
+            <field name="active">True</field>
+        </record>
+        
+    </data>
+</odoo>

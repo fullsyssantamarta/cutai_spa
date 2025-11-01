@@ -94,6 +94,11 @@ class CutaiSession(models.Model):
         digits=(5, 2)
     )
     
+    shot_width = fields.Char(
+        string='Ancho de Disparo',
+        help='Ancho de disparo utilizado en el tratamiento'
+    )
+    
     pulses_count = fields.Integer(
         string='Número de Pulsos',
         help='Total de pulsos aplicados en la sesión'
