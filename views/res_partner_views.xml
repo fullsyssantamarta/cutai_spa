@@ -21,6 +21,7 @@
                 <field name="is_cutai_client" widget="boolean_toggle"/>
             </xpath>
             
+            <!-- Agregar pestaña de Información CUTAI -->
             <xpath expr="//notebook" position="inside">
                 <page string="Información CUTAI" invisible="is_cutai_client == False">
                     <group>
@@ -43,6 +44,19 @@
                         </group>
                         <group string="Membresía Activa">
                             <field name="active_membership_id"/>
+                        </group>
+                    </group>
+                    
+                    <!-- Detalles de Membresía (solo si tiene membresía activa) -->
+                    <group invisible="active_membership_id == False">
+                        <group string="Información de Membresía">
+                            <field name="membership_cycle" widget="badge"/>
+                            <field name="membership_next_charge"/>
+                            <field name="membership_late_fees" widget="monetary"/>
+                        </group>
+                        <group string="Estado de Membresía">
+                            <field name="membership_is_frozen" widget="boolean_toggle"/>
+                            <field name="membership_freeze_reason" invisible="membership_is_frozen == False" placeholder="Motivo del congelamiento..."/>
                         </group>
                     </group>
                     <group>

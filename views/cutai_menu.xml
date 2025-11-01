@@ -59,8 +59,13 @@
     <menuitem id="menu_cutai_calendar"
               name="Agenda"
               parent="menu_cutai_root"
-              action="action_calendar_event_cutai"
               sequence="40"/>
+    
+    <menuitem id="menu_cutai_calendar_all"
+              name="Todas las Sucursales"
+              parent="menu_cutai_calendar"
+              action="action_calendar_event_cutai"
+              sequence="10"/>
 
     <!-- Servicios SPA -->
     <menuitem id="menu_cutai_services"
@@ -129,10 +134,22 @@
               sequence="60"/>
 
     <menuitem id="menu_cutai_dashboard"
-              name="Dashboard"
+              name="Dashboard General"
               parent="menu_cutai_reports"
               action="action_cutai_dashboard"
               sequence="10"/>
+    
+    <menuitem id="menu_cutai_dashboard_appointments"
+              name="Dashboard de Citas"
+              parent="menu_cutai_reports"
+              action="action_cutai_dashboard_appointments"
+              sequence="20"/>
+    
+    <menuitem id="menu_cutai_dashboard_sessions"
+              name="Dashboard de Sesiones"
+              parent="menu_cutai_reports"
+              action="action_cutai_dashboard_sessions"
+              sequence="30"/>
 
     <!-- Configuración -->
     <menuitem id="menu_cutai_config"

@@ -71,6 +71,44 @@ class Partner(models.Model):
         store=True
     )
     
+    # Campos relacionados de membresía para mostrar en perfil
+    membership_cycle = fields.Selection(
+        related='active_membership_id.cycle',
+        string='Ciclo Actual',
+        readonly=True
+    )
+    
+    membership_next_charge = fields.Date(
+        related='active_membership_id.next_charge_date',
+        string='Próximo Cobro',
+        readonly=True
+    )
+    
+    membership_late_fees = fields.Monetary(
+        related='active_membership_id.accumulated_late_fees',
+        string='Moras Acumuladas',
+        currency_field='currency_id',
+        readonly=True
+    )
+    
+    currency_id = fields.Many2one(
+        'res.currency',
+        string='Moneda',
+        default=lambda self: self.env.company.currency_id
+    )
+    
+    membership_is_frozen = fields.Boolean(
+        related='active_membership_id.is_frozen',
+        string='Membresía Congelada',
+        readonly=True
+    )
+    
+    membership_freeze_reason = fields.Text(
+        related='active_membership_id.freeze_reason',
+        string='Motivo de Congelamiento',
+        readonly=True
+    )
+    
     treatment_ids = fields.One2many(
         'cutai.treatment',
         'partner_id',
@@ -238,16 +276,23 @@ class Partner(models.Model):
     def action_view_session_history(self):
         """Abrir vista de historial de sesiones por zona"""
         self.ensure_one()
+        
+        # Obtener el ID de la vista especial de historial
+        tree_view = self.env.ref('cutai_laser_clinic.view_cutai_session_history_tree', raise_if_not_found=False)
+        
         return {
             'name': f'Historial de Sesiones - {self.name}',
             'type': 'ir.actions.act_window',
             'res_model': 'cutai.session',
             'view_mode': 'tree,form',
+            'views': [(tree_view.id if tree_view else False, 'tree'), (False, 'form')],
             'domain': [('partner_id', '=', self.id), ('state', '=', 'completed')],
             'context': {
                 'default_partner_id': self.id,
-                'group_by': 'zone_id',
-            }
+                'group_by': ['zone_id'],
+                'search_default_group_zone': 1,
+            },
+            'target': 'current',
         }
     
     @api.constrains('phototype', 'active_zones')

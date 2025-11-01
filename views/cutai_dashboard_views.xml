@@ -1,26 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- Dashboard Placeholder -->
-    <record id="view_cutai_dashboard" model="ir.ui.view">
-        <field name="name">cutai.dashboard</field>
+    <!-- Vista Gráfica de Sesiones -->
+    <record id="view_cutai_session_graph" model="ir.ui.view">
+        <field name="name">cutai.session.graph</field>
         <field name="model">cutai.session</field>
         <field name="arch" type="xml">
-            <list string="Dashboard CUTAI">
-                <field name="session_date"/>
-                <field name="partner_id"/>
-                <field name="zone_id"/>
-                <field name="branch_id"/>
-                <field name="state"/>
-            </list>
+            <graph string="Análisis de Sesiones" type="bar" stacked="True">
+                <field name="branch_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="session_date" interval="month" type="row"/>
+            </graph>
         </field>
     </record>
 
+    <!-- Vista Pivot de Sesiones -->
+    <record id="view_cutai_session_pivot" model="ir.ui.view">
+        <field name="name">cutai.session.pivot</field>
+        <field name="model">cutai.session</field>
+        <field name="arch" type="xml">
+            <pivot string="Análisis Pivote de Sesiones">
+                <field name="branch_id" type="row"/>
+                <field name="attendant_id" type="col"/>
+                <field name="zone_id" type="row"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Vista Gráfica de Citas -->
+    <record id="view_calendar_event_graph" model="ir.ui.view">
+        <field name="name">calendar.event.graph.cutai</field>
+        <field name="model">calendar.event</field>
+        <field name="arch" type="xml">
+            <graph string="Análisis de Citas" type="line">
+                <field name="start" interval="day" type="row"/>
+                <field name="appointment_state" type="col"/>
+                <field name="branch_id" type="row"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Vista Pivot de Citas -->
+    <record id="view_calendar_event_pivot" model="ir.ui.view">
+        <field name="name">calendar.event.pivot.cutai</field>
+        <field name="model">calendar.event</field>
+        <field name="arch" type="xml">
+            <pivot string="Análisis Pivote de Citas">
+                <field name="branch_id" type="row"/>
+                <field name="attendant_id" type="col"/>
+                <field name="appointment_state" type="col"/>
+                <field name="real_price" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Acción Dashboard de Sesiones -->
+    <record id="action_cutai_dashboard_sessions" model="ir.actions.act_window">
+        <field name="name">Dashboard de Sesiones</field>
+        <field name="res_model">cutai.session</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'graph', 'view_id': ref('view_cutai_session_graph')}),
+            (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_cutai_session_pivot')}),
+            (0, 0, {'view_mode': 'list'})]"/>
+        <field name="context">{'search_default_completed': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Análisis de Sesiones de Tratamiento
+            </p>
+            <p>
+                Visualiza estadísticas de sesiones por sucursal, operador y zona.
+            </p>
+        </field>
+    </record>
+
+    <!-- Acción Dashboard de Citas -->
+    <record id="action_cutai_dashboard_appointments" model="ir.actions.act_window">
+        <field name="name">Dashboard de Citas</field>
+        <field name="res_model">calendar.event</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'graph', 'view_id': ref('view_calendar_event_graph')}),
+            (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_calendar_event_pivot')}),
+            (0, 0, {'view_mode': 'list'})]"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Análisis de Citas y Reservas
+            </p>
+            <p>
+                Visualiza estadísticas de citas, asistencia y ventas por sucursal y profesional.
+            </p>
+        </field>
+    </record>
+
+    <!-- Acción Dashboard Principal (mantener compatibilidad) -->
     <record id="action_cutai_dashboard" model="ir.actions.act_window">
         <field name="name">Dashboard</field>
-        <field name="res_model">cutai.session</field>
-        <field name="view_mode">list,graph,pivot</field>
-        <field name="context">{'search_default_this_month': 1}</field>
+        <field name="res_model">calendar.event</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'graph', 'view_id': ref('view_calendar_event_graph')}),
+            (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_calendar_event_pivot')}),
+            (0, 0, {'view_mode': 'list'})]"/>
+        <field name="context">{}</field>
     </record>
 
 </odoo>

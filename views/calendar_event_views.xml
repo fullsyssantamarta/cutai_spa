@@ -274,17 +274,23 @@
         <field name="inherit_id" ref="calendar.view_calendar_event_calendar"/>
         <field name="arch" type="xml">
             <xpath expr="//calendar" position="attributes">
-                <attribute name="color">branch_id</attribute>
+                <attribute name="color">appointment_state</attribute>
                 <attribute name="event_open_popup">true</attribute>
                 <attribute name="quick_create">false</attribute>
+                <attribute name="mode">month</attribute>
+                <attribute name="date_start">start</attribute>
+                <attribute name="date_stop">stop</attribute>
             </xpath>
             <xpath expr="//calendar" position="inside">
                 <field name="branch_id"/>
+                <field name="cabin_id"/>
                 <field name="attendant_id"/>
                 <field name="main_service_id"/>
                 <field name="appointment_state"/>
                 <field name="client_first_name"/>
                 <field name="client_last_name"/>
+                <field name="client_phone"/>
+                <field name="main_partner_id"/>
             </xpath>
         </field>
     </record>
@@ -313,14 +319,15 @@
     <record id="action_calendar_event_cutai" model="ir.actions.act_window">
         <field name="name">Agenda CUTAI</field>
         <field name="res_model">calendar.event</field>
-        <field name="view_mode">list,calendar,gantt,form</field>
+        <field name="view_mode">calendar,gantt,list,form</field>
         <field name="view_ids" eval="[(5, 0, 0),
-            (0, 0, {'view_mode': 'list', 'view_id': ref('view_calendar_event_list_cutai')}),
             (0, 0, {'view_mode': 'calendar', 'view_id': ref('view_calendar_event_calendar_cutai')}),
             (0, 0, {'view_mode': 'gantt', 'view_id': ref('view_calendar_event_gantt_cutai')}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_calendar_event_list_cutai')}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('view_calendar_event_form_cutai')})]"/>
         <field name="context">{
             'default_appointment_state': 'reserved',
+            'search_default_today': 1,
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -373,4 +380,9 @@
         </field>
     </record>
 
+    <!-- Acciones de agenda filtradas por sucursal -->
+    <!-- Nota: Las sucursales deben crearse con IDs específicos o usar external IDs -->
+    
 </odoo>
+
+```
